@@ -1,47 +1,135 @@
-document.addEventListener("DOMContentLoaded", function() {
-
+document.addEventListener("DOMContentLoaded", function () {
   gsap.registerPlugin(ScrollTrigger);
 
-  // ===== PRELOADER COUNTER =====
-  let counter = { value: 0 };
-  const counterEl = document.querySelector('.counter');
-  const preloader = document.querySelector('.preloader');
-  const hero = document.querySelector('.hero');
-  const heroLeft = document.querySelector('.hero-left');
-  const heroImgs = document.querySelectorAll('.hero-right img');
+  const counter = { value: 0 };
+  const counterEl = document.querySelector(".counter");
+  const preloader = document.querySelector(".preloader");
+  const hero = document.querySelector(".hero");
+  const heroLeft = document.querySelector(".hero-left");
+  const heroImgs = document.querySelectorAll(".hero-right img");
 
+  // ===== PRELOADER COUNTER =====
   gsap.to(counter, {
     value: 100,
-    duration: 2.5,
+    duration: 2,
     ease: "power1.out",
-    onUpdate: () => counterEl.textContent = Math.floor(counter.value) + '%',
+    onUpdate: () => {
+      counterEl.textContent = Math.floor(counter.value) + "%";
+    },
     onComplete: () => {
-      gsap.to(preloader, {
-        opacity: 0,
-        duration: 1,
+      // ===== HERO + PRELOADER ANIMATION =====
+      const tl = gsap.timeline({
         onComplete: () => {
-          preloader.style.display = "none";
+          preloader.classList.add("hide");
           document.body.style.overflow = "auto";
-          
-          // Animate hero section up
-          gsap.to(hero, {y: 0, duration: 1.2, ease: "power3.out"});
-          gsap.to(heroLeft, {opacity:1, y:0, duration:1.2, delay:0.6, ease:"power2.out"});
-          gsap.to(heroImgs[0], {opacity:1, scale:1, duration:1.5, ease:"power3.out"});
         }
       });
-    }
+
+      // 1️⃣ Preloader height to 0 (collapse upward)
+      tl.to(preloader, {
+        height: 0,
+        duration: 1.2,
+        ease: "power3.inOut"
+      });
+
+      // 2️⃣ Hero section reveal (slide up)
+      tl.to(
+        hero,
+        {
+          y: 0,
+          duration: 1.2,
+          ease: "power3.out"
+        },
+        "<" // same time (sync with preloader collapse)
+      );
+
+      // 3️⃣ Hero-left background from black → white
+      tl.to(
+        heroLeft,
+        {
+          backgroundColor: "#fff",
+          color: "#000",
+          duration: 1,
+          ease: "power2.inOut"
+        },
+        "-=0.8"
+      );
+
+      // 4️⃣ Hero image zoom-in
+      tl.to(
+        heroImgs[0],
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1.5,
+          ease: "power3.out"
+        },
+        "-=0.6"
+      );
+    },
   });
 
-  // ===== SCROLL IMAGE CHANGER =====
-  let current = 0;
-  window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY;
-    const index = Math.min(Math.floor(scrollPos / 500), heroImgs.length - 1);
-    if (index !== current) {
-      gsap.to(heroImgs[current], {opacity:0, scale:1.2, duration:1, ease:"power2.out"});
-      gsap.to(heroImgs[index], {opacity:1, scale:1, duration:1.2, ease:"power2.out"});
-      current = index;
-    }
+  /* ABOUT SECTION START */
+
+  ScrollTrigger.defaults({
+    invalidateOnRefresh: true,
+    anticipatePin: 1,
   });
+
+  gsap.to(".bg", {
+    y: "-100%",
+    ease: "none",
+    force3D: true,
+    scrollTrigger: {
+      trigger: ".about",
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.5,
+    },
+  });
+
+  gsap.set(".about__introduction", { y: "50%" });
+
+  gsap.to(".about__introduction", {
+    y: "-100%",
+    ease: "none",
+    force3D: true,
+    scrollTrigger: {
+      trigger: ".about",
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.5,
+    },
+  });
+
+  gsap.set(".about_quote--first", { y: "200%" });
+
+  gsap.to(".about_quote--first", {
+    y: "-100%",
+    ease: "none",
+    force3D: true,
+    scrollTrigger: {
+      trigger: ".about__introduction",
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.5,
+    },
+  });
+
+  gsap.set(".about__images--first", { y: "100%" });
+
+  gsap.to(".about__images--first", {
+    y: "-300%",
+    ease: "none",
+    force3D: true,
+    scrollTrigger: {
+      trigger: ".about__introduction",
+      start: "top top",
+      end: "bottom top",
+      scrub: 1.5,
+    },
+  });
+
+  /* ABOUT SECTION END */
 
 });
