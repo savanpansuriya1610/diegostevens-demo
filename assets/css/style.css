@@ -1,0 +1,22 @@
+/* import fonts start*/
+@import url(../fonts/stylesheet.css);
+/* import fonts end*/
+
+/* basic styling */
+:root {
+/* font family */
+--primary-font-family: 'Canopee';
+--base-font-family : 'GT America Rg';
+}
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}
+h1, h2, h3, h4, h5, h6 {
+font-family: var(--primary-font-family);
+}

@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Canopee';
+    src: url('Canopee-Regular.woff2') format('woff2'),
+        url('Canopee-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT America Rg';
+    src: url('GTAmerica-Bd.woff2') format('woff2'),
+        url('GTAmerica-Bd.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT America Rg';
+    src: url('GTAmerica-Rg.woff2') format('woff2'),
+        url('GTAmerica-Rg.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
