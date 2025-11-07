@@ -1,17 +1,34 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {  
+  // Lenis Scroll
+
+const lenis = new Lenis({
+  smooth: true,
+  multiplier: 1,
+  easing: (t) => t * (2 - t),
+  smoothTouch: true,
+  lerp: 0.05,
+  duration: 1.2
+});
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+
+requestAnimationFrame(raf);
+  
   gsap.registerPlugin(ScrollTrigger);
 
-
-
   const preloader = document.querySelector(".preloader__wrapper");
-  const preloaderInner = document.querySelector(".preloader__wrapper-inner");
   const counterEl = document.querySelector(".counter");
   const heroWrapper = document.querySelector(".hero__wrapper");
   const heroLeft = document.querySelector(".hero__wrapper-left");
   const heroImg = document.querySelector(".hero__wrapper-right img");
   const headerNav = document.querySelector(".header__nav");
+  const fixedLogo = document.querySelector(".fixed-logo");
+  const fixedLogoImg = document.querySelector(".fixed-logo svg");
 
-  // Start from top
+
   window.scrollTo(0, 0);
 
   const tl = gsap.timeline({
@@ -27,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
       counterEl.textContent = Math.floor(counter.value) + "%";
     }
   });
+
 
   // ===== PRELOADER + HERO START TOGETHER =====
   tl.addLabel("revealStart");
@@ -69,9 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     duration: 1.3,
     ease: "power2.out",
     onUpdate: function () {
-      // progress = 0 → 1
       const progress = this.progress() * 100;
-      // dynamic gradient position change
       heroLeft.style.background = `linear-gradient(0deg, rgba(255,255,255,1) 100%, rgba(255,255,255,1) ${100 - progress}%)`;
     }
   }, "revealStart");
@@ -85,38 +101,26 @@ document.addEventListener("DOMContentLoaded", function () {
     ease: "power3.out"
   }, "revealStart+=0.8");
 
-  // List of hero image URLs
+  // ===== ROTATING HERO IMAGE LOGIC =====
   const Heroimages = [
     '../assets/images/hero-img-1.jpg',
     '../assets/images/hero-img-2.jpg',
     '../assets/images/hero-img-3.jpg',
   ];
 
-  // Get last used index from localStorage
   let currentIndex = localStorage.getItem('heroImageIndex');
-
-  // If not set, start from 0
-  if (!currentIndex) {
-    currentIndex = 0;
-  } else {
+  if (!currentIndex) currentIndex = 0;
+  else {
     currentIndex = parseInt(currentIndex) + 1;
-    // Reset to 0 if it exceeds the array length
-    if (currentIndex >= Heroimages.length) {
-      currentIndex = 0;
-    }
+    if (currentIndex >= Heroimages.length) currentIndex = 0;
   }
-
-  // Save current index for next page load
   localStorage.setItem('heroImageIndex', currentIndex);
 
-  // Select the hero image element
   const heroInnerImg = document.querySelector('.hero__wrapper-right > img');
-
-  // Set the image source if element exists
   if (heroInnerImg) {
     heroInnerImg.src = Heroimages[currentIndex];
   }
-  /* HEADER JS START */
+    /* HEADER JS START */
   const hamburger = document.querySelector("#hamburger");
   const menu = document.querySelector(".menu");
 
@@ -124,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
     hamburger.classList.toggle("active");
 
     if (hamburger.classList.contains("active")) {
-      // OPEN MENU — remove .hide and animate mask down
       menu.classList.remove("hide");
       gsap.to(menu, {
         duration: 0.8,
@@ -132,7 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
         css: { maskPosition: "0% 100%", WebkitMaskPosition: "0% 100%" }
       });
     } else {
-      // CLOSE MENU — animate mask up and then hide
       gsap.to(menu, {
         duration: 0.8,
         ease: "power3.inOut",
@@ -143,8 +145,44 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
-
   /* HEADER JS END */
+
+
+  /* ===== SCROLL ZOOM EFFECT ON HERO IMAGE ===== */
+  const zoomImages = document.querySelectorAll(".columns__layout-section-left img.columns__layout-section-img");
+  
+    tl.eventCallback("onComplete", function () {
+    ScrollTrigger.refresh();
+
+    gsap.to(heroImg, {
+      scale: 1.5, 
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".hero__wrapper",
+        start: "top top",     
+        end: "bottom top",    
+        scrub: true,          
+        markers: false        
+      }
+    });
+
+    zoomImages.forEach((img) => {
+      gsap.fromTo(img,
+        { scale: 1 },
+        {
+          scale: 1.5, 
+          ease: "none",
+          scrollTrigger: {
+            trigger: img,          
+            start: "top bottom",  
+            end: "bottom top",    
+            scrub: true,          
+            markers: false       
+          }
+        }
+      );
+    });
+  });
 
   /* ABOUT SECTION START */
 
@@ -350,21 +388,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* SPORTLIGHT EFFECT END */
 
+   /*=== PARALLAX DESIN START(BACKGROUND IMAGE MOVEMEMT) === */
+  const maxMove = -700;
+
+  const speedFactors = {
+    child1: 1.10, //super slow
+    child2: 2.0,  //slow
+    child3: 2.5,  // fast
+    child4: 4.5   //super faster
+  };
+
+  const commonScrollTrigger = {
+    trigger: ".partners-container",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: 1.5
+  };
+
+  gsap.to(".partner-item:nth-child(1) .image-container img", {
+    y: maxMove * speedFactors.child1,
+    ease: "none",
+    scrollTrigger: commonScrollTrigger
+  });
+
+  gsap.to(".partner-item:nth-child(2) .image-container img", {
+    y: maxMove * speedFactors.child2,
+    ease: "none",
+    scrollTrigger: commonScrollTrigger
+  });
+
+  gsap.to(".partner-item:nth-child(3) .image-container img", {
+    y: maxMove * speedFactors.child3,
+    ease: "none",
+    scrollTrigger: commonScrollTrigger
+  });
+
+  gsap.to(".partner-item:nth-child(4) .image-container img", {
+    y: maxMove * speedFactors.child4,
+    ease: "none",
+    scrollTrigger: commonScrollTrigger
+  });
+  /*=== PARALLAX DESIN END(BACKGROUND IMAGE MOVEMEMT) === */ 
+
 });
-
-/* LENIS JS START */
-
-// const lenis = new Lenis({
-//   duration: 1.9,
-//   easing: (t) => Math.min(1, 1.009 - Math.pow(2, -10 * t)),
-//   smooth: true,
-//   lerp: 0.6,
-// });
-
-// function raf(time) {
-//   lenis.raf(time);
-//   requestAnimationFrame(raf);
-// }
-// requestAnimationFrame(raf);
-
-/* LENIS JS END */
