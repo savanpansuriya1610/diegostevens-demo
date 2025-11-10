@@ -1,22 +1,22 @@
-document.addEventListener("DOMContentLoaded", function () {  
+document.addEventListener("DOMContentLoaded", function () {
   // Lenis Scroll
 
-const lenis = new Lenis({
-  smooth: true,
-  multiplier: 1,
-  easing: (t) => t * (2 - t),
-  smoothTouch: true,
-  lerp: 0.05,
-  duration: 1.2
-});
+  const lenis = new Lenis({
+    smooth: true,
+    multiplier: 1,
+    easing: (t) => t * (2 - t),
+    smoothTouch: true,
+    lerp: 0.05,
+    duration: 1.2
+  });
 
-function raf(time) {
-  lenis.raf(time);
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
   requestAnimationFrame(raf);
-}
 
-requestAnimationFrame(raf);
-  
   gsap.registerPlugin(ScrollTrigger);
 
   const preloader = document.querySelector(".preloader__wrapper");
@@ -49,6 +49,15 @@ requestAnimationFrame(raf);
   // ===== PRELOADER + HERO START TOGETHER =====
   tl.addLabel("revealStart");
 
+  tl.to(".logo-black", {
+    clipPath: "inset(0% 0 0 0)",
+    duration: 1.3,
+    ease: "power4.out",
+    onComplete: () => {
+      preloader.classList.add("hide");
+    }
+  }, "revealStart");
+
   // PRELOADER COLLAPSE
   tl.to(preloader, {
     height: 0,
@@ -56,9 +65,12 @@ requestAnimationFrame(raf);
     ease: "power4.inOut",
     transformOrigin: "bottom center",
     onComplete: () => {
-      preloader.classList.add("hide");
+      fixedLogo.classList.add("hide");
+      heroLeft.classList.add("show");
     }
   }, "revealStart");
+
+
 
   // HERO TEXT (rise bottom → top)
   gsap.set(heroWrapper, { y: "100%" });
@@ -88,7 +100,7 @@ requestAnimationFrame(raf);
     ease: "power2.out",
     onUpdate: function () {
       const progress = this.progress() * 100;
-      heroLeft.style.background = `linear-gradient(0deg, rgba(255,255,255,1) 100%, rgba(255,255,255,1) ${100 - progress}%)`;
+      heroLeft.style.background = `linear-gradient(0deg, rgba(255, 255, 255, 1) 100%, rgba(255,255,255,1) ${100 - progress}%)`;
     }
   }, "revealStart");
 
@@ -120,7 +132,7 @@ requestAnimationFrame(raf);
   if (heroInnerImg) {
     heroInnerImg.src = Heroimages[currentIndex];
   }
-    /* HEADER JS START */
+  /* HEADER JS START */
   const hamburger = document.querySelector("#hamburger");
   const menu = document.querySelector(".menu");
 
@@ -150,19 +162,19 @@ requestAnimationFrame(raf);
 
   /* ===== SCROLL ZOOM EFFECT ON HERO IMAGE ===== */
   const zoomImages = document.querySelectorAll(".columns__layout-section-left img.columns__layout-section-img");
-  
-    tl.eventCallback("onComplete", function () {
+
+  tl.eventCallback("onComplete", function () {
     ScrollTrigger.refresh();
 
     gsap.to(heroImg, {
-      scale: 1.5, 
+      scale: 1.5,
       ease: "none",
       scrollTrigger: {
         trigger: ".hero__wrapper",
-        start: "top top",     
-        end: "bottom top",    
-        scrub: true,          
-        markers: false        
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        markers: false
       }
     });
 
@@ -170,14 +182,14 @@ requestAnimationFrame(raf);
       gsap.fromTo(img,
         { scale: 1 },
         {
-          scale: 1.5, 
+          scale: 1.5,
           ease: "none",
           scrollTrigger: {
-            trigger: img,          
-            start: "top bottom",  
-            end: "bottom top",    
-            scrub: true,          
-            markers: false       
+            trigger: img,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+            markers: false
           }
         }
       );
@@ -388,14 +400,14 @@ requestAnimationFrame(raf);
 
   /* SPORTLIGHT EFFECT END */
 
-   /*=== PARALLAX DESIN START(BACKGROUND IMAGE MOVEMEMT) === */
+  /*=== PARALLAX DESIN START(BACKGROUND IMAGE MOVEMEMT) === */
   const maxMove = -700;
 
   const speedFactors = {
-    child1: 1.10, //super slow
-    child2: 2.0,  //slow
-    child3: 2.5,  // fast
-    child4: 4.5   //super faster
+    child1: 1.10,
+    child2: 2.0,
+    child3: 2.5,
+    child4: 4.5
   };
 
   const commonScrollTrigger = {
@@ -428,6 +440,29 @@ requestAnimationFrame(raf);
     ease: "none",
     scrollTrigger: commonScrollTrigger
   });
-  /*=== PARALLAX DESIN END(BACKGROUND IMAGE MOVEMEMT) === */ 
+  /*=== PARALLAX DESIN END(BACKGROUND IMAGE MOVEMEMT) === */
 
 });
+
+/*=== TIMELINE EFFECT START === */
+
+ScrollTrigger.create({
+  trigger: ".columns__layout-section",
+  start: "top top",
+  end: "+=50%",
+});
+
+
+gsap.set(".project-timeline", { y: "70vh" });
+gsap.to(".project-timeline", {
+  y: 0,
+  ease: "none",
+  scrollTrigger: {
+    trigger: ".columns__layout-section",
+    start: "top top",
+    end: "+=97%",
+    scrub: 1
+  }
+});
+
+/*=== TIMELINE EFFECT END === */

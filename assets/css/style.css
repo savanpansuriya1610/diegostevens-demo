@@ -18,6 +18,14 @@
   --spotlight-x: -999px;
   --spotlight-y: -999px;
   --spotlight-opacity: 0;
+
+  /* Grandient effect */
+  --base-gradient: linear-gradient(#9b9b9b,
+      #9b9b9b);
+
+  --spotlight-gradient: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y),
+      var(--white) 0%,
+      rgba(255, 255, 255, 0) 70%);
 }
 
 * {
@@ -44,7 +52,7 @@ html {
   height: auto;
   background: var(--black);
   font-family: var(--base-font-family);
-  overflow: hidden; /* Lenis handles scrolling */
+  overflow: hidden;
 }
 
 /* html, body {
@@ -53,7 +61,7 @@ html {
   background: var(--black);
 } */
 
-body > main {
+body>main {
   overflow: hidden;
   position: relative;
 }
@@ -96,6 +104,7 @@ main {
 .py-16 {
   padding: 16vh 0;
 }
+
 /* SPORTLIGHT EFFECT START */
 
 h2.spot-text {
@@ -147,28 +156,50 @@ h2.spot-text {
 /* SPORTLIGHT EFFECT END */
 
 /* ===== PRELOADER ===== */
-/* .fixed-logo {
+.fixed-logo {
   height: 100%;
   position: fixed;
   top: 0;
   padding: 2vw;
   z-index: 7;
-  width: 50%;
+  width: 100%;
 }
 
 .fixed-logo svg {
-  filter: invert(1);
   height: auto;
 }
 
 .fixed-logo .logo {
   width: 19vh;
   display: flex;
+  position: relative;
 }
 
-.preloader__wrapper-left .logo {
-  display: none;
-} */
+.fixed-logo .logo svg {
+  position: absolute;
+  inset: 0;
+  width: 19vh;
+}
+
+.logo-mask-wrap {
+  position: relative;
+}
+
+.logo-mask-wrap svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+}
+
+.logo-white {
+  z-index: 1;
+}
+
+.logo-black {
+  z-index: 2;
+  clip-path: inset(100% 0 0 0);
+}
 
 .preloader__wrapper {
   width: 100%;
@@ -183,8 +214,8 @@ h2.spot-text {
 .preloader__wrapper-inner {
   width: 100vw;
   position: absolute;
-  height: 100vh ;
-  top: auto ;
+  height: 100vh;
+  top: auto;
   left: 0;
   bottom: 0;
   background-color: var(--black);
@@ -196,7 +227,7 @@ h2.spot-text {
 .preloader__wrapper-left {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 2vw;
 }
 
@@ -234,6 +265,7 @@ h2.spot-text {
   display: flex;
   gap: 5px;
 }
+
 @keyframes flicker {
   0% {
     opacity: 1;
@@ -270,14 +302,21 @@ h2.spot-text {
 .hero__wrapper-left {
   justify-content: space-between;
 }
+
 .menu__left-intro {
   background: var(--white);
   justify-content: space-between;
 }
+
 .hero__wrapper-left svg {
   z-index: 4;
-  /* display: none; */
+  opacity: 0;
 }
+
+.hero__wrapper-left.show svg {
+  opacity: 1;
+}
+
 .hero__wrapper-left svg,
 .menu__left-intro svg {
   width: 19vh;
@@ -540,52 +579,57 @@ div#hamburger {
 
 /* ===== COLUMNS SECTION CSS START ===== */
 section.columns__layout-section {
-    width: 100vw;
-    display: flex;
-    height: 100%;
+  width: 100vw;
+  display: flex;
+  height: 100%;
 }
 
 .columns__layout-section-left {
-    display: flex;
-    overflow: hidden;
+  display: flex;
+  overflow: hidden;
 }
 
 .columns__layout-section-left img.columns__layout-section-img {
-    width: 100%;
-    height: 100vh;
-    object-fit: cover;
-    display: flex;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  display: flex;
 }
 
 .columns__layout-section-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: auto;
-    background: var(--white);
-    padding: 2vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  background: var(--white);
+  padding: 2vw;
 }
+
 .columns__layout-section-right .default-list {
   list-style: none;
 }
-.columns__layout-section-right .default-list li  {
-      font-size: 2.5vw;
-    line-height: 3.2vw;
-    font-family: var(--base-font-family);
-    color: var(--black);
-} 
-.columns__layout-section-right .columns__layout-section-title {
-    font-size: 1.4vw;
-    line-height: 1.85vw;
-    font-family: var(--base-font-family);
-    color: var(--black);
+
+.columns__layout-section-right .default-list li {
+  font-size: 2.5vw;
+  line-height: 3.2vw;
+  font-family: var(--base-font-family);
+  color: var(--black);
 }
+
+.columns__layout-section-right .columns__layout-section-title {
+  font-size: 1.4vw;
+  line-height: 1.85vw;
+  font-family: var(--base-font-family);
+  color: var(--black);
+}
+
 /* ===== COLUMNS SECTION CSS START ===== */
 
 /* ===== TODAY SLIDER CSS START ===== */
 .today__Slider-section {
   background: var(--white);
 }
+
 /* ===== TODAY SLIDER CSS END ===== */
 
 
@@ -762,7 +806,19 @@ section.columns__layout-section {
   width: 48.2vw;
   font-size: 10vw;
   line-height: 9vw;
-  color: var(--grey);
+  font-weight: normal;
+
+
+  display: inline-block;
+
+  background-image:
+    var(--spotlight-gradient),
+    var(--base-gradient);
+  background-repeat: no-repeat, repeat;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .project-timeline__year {
@@ -787,6 +843,15 @@ section.columns__layout-section {
   line-height: 1.85vw;
   color: var(--grey);
   margin-bottom: 13vh;
+  display: inline-block;
+  background-image:
+    var(--spotlight-gradient),
+    var(--base-gradient);
+  background-repeat: no-repeat, repeat;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .project-timeline__achive p {
@@ -794,6 +859,17 @@ section.columns__layout-section {
   line-height: 1.85vw;
   color: var(--grey);
   margin-bottom: 13vh;
+
+  display: inline-block;
+
+  background-image:
+    var(--spotlight-gradient),
+    var(--base-gradient);
+  background-repeat: no-repeat, repeat;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .project-timeline__img {
@@ -816,6 +892,49 @@ section.columns__layout-section {
 }
 
 /* === PROJECT TIMELINE END === */
+
+/* === OUR CLIENTS START === */
+
+.our-clients {
+  width: 100%;
+  background-color: var(--white);
+  color: var(--black);
+  flex-direction: column;
+  z-index: 8;
+  height: auto;
+}
+
+.our-clients-bg {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.our-clients__items {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding-bottom: 30vh;
+}
+
+.our-clients-content p {
+  max-width: 45%;
+  margin: 0 auto 15vh auto;
+  font-size: 1.4vw;
+  line-height: 1.85vw;
+}
+
+.our-clients-content img {
+  width: 65vw;
+  height: auto;
+  pointer-events: none;
+}
+
+/* === OUR CLIENTS END === */
 
 /* ==== CONTACT SECTION START ==== */
 
