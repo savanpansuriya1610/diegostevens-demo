@@ -1397,6 +1397,7 @@ section.columns__layout-section {
     opacity: 1;
     transform: none;
   }
+  
 }
 
 @media(max-width: 767px) {

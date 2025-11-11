@@ -527,5 +527,6 @@ document.addEventListener("DOMContentLoaded", function () {
     handleResize();
   }
   /* === OUR FOCUS END === */
+  
 
 });
