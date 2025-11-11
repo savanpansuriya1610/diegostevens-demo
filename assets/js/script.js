@@ -442,27 +442,90 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   /*=== PARALLAX DESIN END(BACKGROUND IMAGE MOVEMEMT) === */
 
-});
+  /*=== TIMELINE EFFECT START === */
 
-/*=== TIMELINE EFFECT START === */
-
-ScrollTrigger.create({
-  trigger: ".columns__layout-section",
-  start: "top top",
-  end: "+=50%",
-});
-
-
-gsap.set(".project-timeline", { y: "70vh" });
-gsap.to(".project-timeline", {
-  y: 0,
-  ease: "none",
-  scrollTrigger: {
+  ScrollTrigger.create({
     trigger: ".columns__layout-section",
     start: "top top",
-    end: "+=97%",
-    scrub: 1
-  }
-});
+    end: "+=50%",
+  });
 
-/*=== TIMELINE EFFECT END === */
+
+  gsap.set(".project-timeline", { y: "70vh" });
+  gsap.to(".project-timeline", {
+    y: 0,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".columns__layout-section",
+      start: "top top",
+      end: "+=97%",
+      scrub: 1
+    }
+  });
+
+  /*=== TIMELINE EFFECT END === */
+
+  /* === OUR FOCUS START === */
+
+  const list = document.querySelector(".our__focus-list");
+  if (list) {
+    const MAX_TRANSLATE = 10;
+    const SCALE = 1.02;
+
+    let activeLi = null;
+
+    list.addEventListener("mousemove", (e) => {
+      const li = e.target.closest("li");
+      if (!li || !list.contains(li)) return;
+
+      activeLi = li;
+
+      const rect = li.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const nx = ((x / rect.width) - 0.5) * 2;
+      const ny = ((y / rect.height) - 0.5) * 2;
+
+      const tx = -nx * MAX_TRANSLATE;
+      const ty = -ny * MAX_TRANSLATE;
+
+      li.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${SCALE})`;
+      li.style.zIndex = 5;
+      li.style.boxShadow = "0 10px 30px rgba(0,0,0,0.25)";
+    });
+
+    list.addEventListener("mouseleave", () => {
+      list.querySelectorAll("li").forEach((li) => {
+        li.style.transform = "";
+        li.style.zIndex = "";
+        li.style.boxShadow = "";
+      });
+    });
+
+    list.addEventListener("mouseout", (e) => {
+      const liLeft = e.target.closest("li");
+      const toElement = e.relatedTarget;
+      if (liLeft && (!toElement || !liLeft.contains(toElement))) {
+        liLeft.style.transform = "";
+        liLeft.style.zIndex = "";
+        liLeft.style.boxShadow = "";
+        if (activeLi === liLeft) activeLi = null;
+      }
+    });
+
+    function handleResize() {
+      if (window.innerWidth <= 768) {
+        list.querySelectorAll("li").forEach((li) => {
+          li.style.transform = "";
+          li.style.zIndex = "";
+          li.style.boxShadow = "";
+        });
+      }
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+  }
+  /* === OUR FOCUS END === */
+
+});
