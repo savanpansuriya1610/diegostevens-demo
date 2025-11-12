@@ -52,14 +52,14 @@ html {
   height: auto;
   background: var(--black);
   font-family: var(--base-font-family);
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
-/* html, body {
+html, body {
   height: auto;
   overflow: hidden; 
   background: var(--black);
-} */
+}
 
 body>main {
   overflow: hidden;
@@ -286,8 +286,9 @@ h2.spot-text {
   top: 0;
   display: flex;
   position: relative;
+  opacity: 0;
+  transform: translateY(100%);
 }
-
 
 .hero__wrapper-left,
 .menu__left-intro {
@@ -1262,31 +1263,159 @@ section.columns__layout-section {
 
 /* === RESPONSIVE LOCK END === */
 
+/* ===== TODAY SLIDER CSS START ===== */
+.today__Slider-section {
+  background: var(--white);
+}
+ 
+.today__slider-intro {
+  display: flex;
+  margin-left: 4vw;
+  width: 100%;
+}
+ 
+.today__slider-intro h2 {
+  margin-top: -0.6vh;
+  width: 48.2vw;
+  font-size: 10vw;
+  line-height: 9vw;
+  font-weight: normal;
+}
+ 
+.today__slider-intro p {
+  font-size: 1.4vw;
+  line-height: 1.85vw;
+}
+ 
+.today__slider-wrapper {
+  width: 100vw;
+  display: flex;
+  margin-bottom: 20vh;
+  user-select: none;
+}
+ 
+.today__slide-content {
+  display: flex;
+  margin: 20vh 0vw;
+  margin-bottom: 0;
+  padding: 0 3vw;
+}
+
+.today__slide-master-card {
+  color: #ffffff;
+  position: relative;
+  width: 29vw;
+  margin: 0 1vw;
+  display: block;
+  overflow: hidden;
+  border-radius: 2vw;
+  mix-blend-mode: darken;
+  background-color: #000000;
+}
+ 
+.today__slide-info {
+  height: 100%;
+  width: 100%;
+  /* position: absolute; */
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2vw;
+  box-sizing: border-box;
+  color: #000;
+}
+ 
+.today__slide-info h3 {
+  font-size: 2.5vw;
+  font-family: var(--base-font-family);
+  font-weight: normal;
+ 
+}
+ 
+.today__slide-info p {
+  font-size: 1.4vw;
+  line-height: 1.85vw;
+  font-weight: normal;
+}
+ 
+.today__slide-video {
+  display: block;
+  width: 100%;
+  position: relative;
+  height: auto;
+  object-fit: cover;
+  z-index: -1;
+}
+ 
+/* ===== TODAY SLIDER CSS END ===== */
+
 /* === OUR FOCUS START === */
 .our__focus {
   flex-direction: row-reverse;
 }
-
+ 
 .our__focus-title p {
   display: flex;
   align-items: center;
   gap: 0.4vw;
   color: var(--white);
 }
-
+ 
 .our__focus-title p span svg {
   display: block;
 }
-
+ 
 .our__focus-left {
   background-color: var(--black);
 }
-
+ 
 .our__focus-list {
-
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
-
+ 
+.our__focus-list li {
+  position: relative;
+  overflow: hidden;
+ 
+}
+ 
+.our__focus-list li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 850px at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 255, 255, 0.116),
+      transparent 70%);
+  opacity: var(--spotlight-opacity, 0);
+  transition: opacity .25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+ 
+.our__focus-list li:hover {
+  z-index: 2;
+  transform: scale(1.02);
+  color: #fff;
+}
+ 
+.our__focus-list li::before {
+  opacity: 1;
+}
+ 
+.our__focus-list li.glow-near {
+  filter: brightness(1.25) blur(1px);
+  background: radial-gradient(circle 850px at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 255, 255, 0.034),
+      rgba(255, 255, 255, 0) 80%),
+    rgb(17, 17, 17);
+  transition: background 0.1s linear;
+}
+ 
 .columns__layout-section-contnet .our__focus-list li {
   font-size: 1.4vw;
   line-height: 1.85vw;
@@ -1295,37 +1424,39 @@ section.columns__layout-section {
   border-radius: 2vw;
   margin-bottom: 0.4vw;
   background-color: rgb(17, 17, 17);
-}
-
-
-.our__focus-list {
   position: relative;
-  isolation: isolate;
+  overflow: hidden;
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  z-index: 0;
 }
-
+ 
 .our__focus-list li {
-  transition: transform 360ms cubic-bezier(.2, .9, .2, 1),
+  transition:
+    transform 360ms cubic-bezier(.2, .9, .2, 1),
     filter 360ms,
     opacity 360ms;
-  will-change: transform;
+  will-change: transform, filter, opacity;
   transform-origin: center center;
   position: relative;
   z-index: 0;
 }
-
+ 
 .our__focus-list:hover li {
   filter: blur(9px);
   opacity: 0.5;
   transform: scale(0.98);
 }
-
+ 
 .our__focus-list li:hover {
   filter: none;
   opacity: 1;
   transform: none;
   z-index: 2;
 }
-
+ 
 /* === OUR FOCUS END === */
 
 @media (max-width: 768px) {

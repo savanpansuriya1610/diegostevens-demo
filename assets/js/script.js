@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+  // ✅ Fix: prevent auto-scroll after reload
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   // Lenis Scroll
 
   const lenis = new Lenis({
@@ -27,9 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const headerNav = document.querySelector(".header__nav");
   const fixedLogo = document.querySelector(".fixed-logo");
   const fixedLogoImg = document.querySelector(".fixed-logo svg");
-
-
-  window.scrollTo(0, 0);
 
   const tl = gsap.timeline({
     defaults: { ease: "power2.out" }
@@ -73,9 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // HERO TEXT (rise bottom → top)
-  gsap.set(heroWrapper, { y: "100%" });
   tl.to(heroWrapper, {
     y: "0%",
+    opacity: 1,
     duration: 1.3,
     ease: "power4.out"
   }, "revealStart");
@@ -527,6 +531,92 @@ document.addEventListener("DOMContentLoaded", function () {
     handleResize();
   }
   /* === OUR FOCUS END === */
-  
+
+  /* === OUR FOCUS (SPORTLIGHT EFFECT) START === */
+  const focusItems = document.querySelectorAll(".our__focus-list li");
+
+  focusItems.forEach((item, index) => {
+    item.addEventListener("mousemove", (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      item.style.setProperty("--mx", `${x}px`);
+      item.style.setProperty("--my", `${y}px`);
+      item.style.setProperty("--spotlight-opacity", 1);
+
+      const prevItem = focusItems[index - 1];
+      const nextItem = focusItems[index + 1];
+
+      if (prevItem) prevItem.classList.add("glow-near");
+      if (nextItem) nextItem.classList.add("glow-near");
+
+      focusItems.forEach((el) => {
+        const rect2 = el.getBoundingClientRect();
+        const relX = e.clientX - rect2.left;
+        const relY = e.clientY - rect2.top;
+        el.style.setProperty("--mx", `${relX}px`);
+        el.style.setProperty("--my", `${relY}px`);
+      });
+    });
+
+    item.addEventListener("mouseleave", () => {
+      item.style.setProperty("--spotlight-opacity", 0);
+      if (focusItems[index - 1]) focusItems[index - 1].classList.remove("glow-near");
+      if (focusItems[index + 1]) focusItems[index + 1].classList.remove("glow-near");
+    });
+  });
+  /* === OUR FOCUS (SPORTLIGHT EFFECT) END === */
+
+  /* ==== MULTI-LANGUAGE SYSTEM JS START ==== */
+  const translations = {
+    en: {
+      loading_main_text: "Chilean, Entrepreneur & Tech Visionary"
+    },
+    es: {
+      loading_main_text: "Visionario chileno, emprendedor y tecnológico"
+    }
+  };
+
+  // === Detect default or saved language ===
+  let currentLang = localStorage.getItem("lang") || "en";
+  setLanguage(currentLang);
+
+  // === Function to update texts ===
+  function setLanguage(lang) {
+    const elements = document.querySelectorAll("[data-translate]");
+    elements.forEach((el) => {
+      const key = el.getAttribute("data-translate");
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+
+    // Update link active state
+    document.querySelectorAll(".lang-wrapper a.lang").forEach((link) => {
+      link.classList.remove("active");
+    });
+    const activeLink = document.querySelector(`.lang-wrapper .${lang === "en" ? "eng" : "es"}`);
+    if (activeLink) activeLink.classList.add("active");
+
+    // Save preference
+    localStorage.setItem("lang", lang);
+    currentLang = lang;
+  }
+
+  // === Add click event listeners ===
+  document.querySelectorAll(".lang-wrapper a.lang").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      if (link.classList.contains("eng")) {
+        setLanguage("en");
+      } else if (link.classList.contains("es")) {
+        setLanguage("es");
+      }
+    });
+  });
+
+  /* ==== MULTI-LANGUAGE SYSTEM JS END ==== */
 
 });
