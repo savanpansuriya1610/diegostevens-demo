@@ -12,6 +12,7 @@
   --white: #fff;
   --black: #000;
   --grey: #636363;
+  --selection-color: #ffe88a;
 
   /* Background Image */
   --spotlight-radius: 600px;
@@ -55,15 +56,27 @@ html {
   /* overflow: hidden; */
 }
 
-html, body {
+html,
+body {
   height: auto;
-  overflow: hidden; 
+  /* overflow: hidden;  */
   background: var(--black);
 }
 
-body>main {
+
+::selection {
+  background: var(--selection-color) !important;
+  color: var(--black) !important;
+}
+
+/* Firefox-specific */
+::-moz-selection {
+  background: var(--selection-color) !important;
+  color: var(--black) !important;
+}
+
+.overflow-hidden {
   overflow: hidden;
-  position: relative;
 }
 
 section {
@@ -136,7 +149,7 @@ h2.spot-text {
   width: 100%;
   height: 100%;
   display: inline-block;
-  color: #fff;
+  color: var(--white);
   pointer-events: none;
   --r: 1000px;
   -webkit-mask: radial-gradient(circle var(--r) at var(--mx) var(--my),
@@ -624,14 +637,6 @@ section.columns__layout-section {
 
 /* ===== COLUMNS SECTION CSS START ===== */
 
-/* ===== TODAY SLIDER CSS START ===== */
-.today__Slider-section {
-  background: var(--white);
-}
-
-/* ===== TODAY SLIDER CSS END ===== */
-
-
 /* ===== ABOUT SECTION START ===== */
 
 .about__introduction {
@@ -933,6 +938,10 @@ section.columns__layout-section {
   pointer-events: none;
 }
 
+.mob-img {
+  display: none;
+}
+
 /* === OUR CLIENTS END === */
 
 /* ==== CONTACT SECTION START ==== */
@@ -974,7 +983,7 @@ section.columns__layout-section {
 }
 
 .contact #cast {
-  color: #ffffff;
+  color: var(--white);
   flex-direction: column;
   position: relative;
 }
@@ -1264,16 +1273,18 @@ section.columns__layout-section {
 /* === RESPONSIVE LOCK END === */
 
 /* ===== TODAY SLIDER CSS START ===== */
+
 .today__Slider-section {
   background: var(--white);
+  overflow: hidden;
 }
- 
+
 .today__slider-intro {
   display: flex;
   margin-left: 4vw;
   width: 100%;
 }
- 
+
 .today__slider-intro h2 {
   margin-top: -0.6vh;
   width: 48.2vw;
@@ -1281,28 +1292,39 @@ section.columns__layout-section {
   line-height: 9vw;
   font-weight: normal;
 }
- 
+
 .today__slider-intro p {
   font-size: 1.4vw;
   line-height: 1.85vw;
 }
- 
+
 .today__slider-wrapper {
   width: 100vw;
   display: flex;
   margin-bottom: 20vh;
   user-select: none;
 }
- 
+
 .today__slide-content {
   display: flex;
   margin: 20vh 0vw;
   margin-bottom: 0;
   padding: 0 3vw;
+  cursor: grab;
+  scroll-behavior: smooth;
+  user-select: none;
+}
+
+.today__slide-content:active {
+  cursor: grabbing;
 }
 
 .today__slide-master-card {
-  color: #ffffff;
+  transition: 0.3s ease;
+}
+
+.today__slide-master-card {
+  color: var(--white);
   position: relative;
   width: 29vw;
   margin: 0 1vw;
@@ -1310,13 +1332,15 @@ section.columns__layout-section {
   overflow: hidden;
   border-radius: 2vw;
   mix-blend-mode: darken;
-  background-color: #000000;
+  background-color: var(--black);
+  transform: scale(1);
+  transition: 0.3s ease;
 }
- 
+
 .today__slide-info {
   height: 100%;
   width: 100%;
-  /* position: absolute; */
+  position: absolute;
   left: 0;
   top: 0;
   z-index: 1;
@@ -1325,22 +1349,22 @@ section.columns__layout-section {
   justify-content: space-between;
   padding: 2vw;
   box-sizing: border-box;
-  color: #000;
+  color: var(--white);
 }
- 
+
 .today__slide-info h3 {
   font-size: 2.5vw;
   font-family: var(--base-font-family);
   font-weight: normal;
- 
+
 }
- 
+
 .today__slide-info p {
   font-size: 1.4vw;
   line-height: 1.85vw;
   font-weight: normal;
 }
- 
+
 .today__slide-video {
   display: block;
   width: 100%;
@@ -1349,41 +1373,41 @@ section.columns__layout-section {
   object-fit: cover;
   z-index: -1;
 }
- 
+
 /* ===== TODAY SLIDER CSS END ===== */
 
 /* === OUR FOCUS START === */
 .our__focus {
   flex-direction: row-reverse;
 }
- 
+
 .our__focus-title p {
   display: flex;
   align-items: center;
   gap: 0.4vw;
   color: var(--white);
 }
- 
+
 .our__focus-title p span svg {
   display: block;
 }
- 
+
 .our__focus-left {
   background-color: var(--black);
 }
- 
+
 .our__focus-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
- 
+
 .our__focus-list li {
   position: relative;
   overflow: hidden;
- 
+
 }
- 
+
 .our__focus-list li::before {
   content: "";
   position: absolute;
@@ -1396,17 +1420,17 @@ section.columns__layout-section {
   pointer-events: none;
   z-index: 0;
 }
- 
+
 .our__focus-list li:hover {
   z-index: 2;
   transform: scale(1.02);
-  color: #fff;
+  color: var(--white);
 }
- 
+
 .our__focus-list li::before {
   opacity: 1;
 }
- 
+
 .our__focus-list li.glow-near {
   filter: brightness(1.25) blur(1px);
   background: radial-gradient(circle 850px at var(--mx, 50%) var(--my, 50%),
@@ -1415,7 +1439,7 @@ section.columns__layout-section {
     rgb(17, 17, 17);
   transition: background 0.1s linear;
 }
- 
+
 .columns__layout-section-contnet .our__focus-list li {
   font-size: 1.4vw;
   line-height: 1.85vw;
@@ -1432,7 +1456,7 @@ section.columns__layout-section {
     transform 0.3s ease;
   z-index: 0;
 }
- 
+
 .our__focus-list li {
   transition:
     transform 360ms cubic-bezier(.2, .9, .2, 1),
@@ -1443,20 +1467,20 @@ section.columns__layout-section {
   position: relative;
   z-index: 0;
 }
- 
+
 .our__focus-list:hover li {
   filter: blur(9px);
   opacity: 0.5;
   transform: scale(0.98);
 }
- 
+
 .our__focus-list li:hover {
   filter: none;
   opacity: 1;
   transform: none;
   z-index: 2;
 }
- 
+
 /* === OUR FOCUS END === */
 
 @media (max-width: 768px) {
@@ -1528,8 +1552,137 @@ section.columns__layout-section {
     opacity: 1;
     transform: none;
   }
-  
+
+  /* PROJECT TIMELINE START */
+  .border {
+    padding: 0;
+  }
+
+  .project-content__main h2 {
+    font-size: 13vw;
+    line-height: 14vw;
+
+    display: inline-block;
+    --spotlight-x: 0px;
+    --spotlight-y: 0px;
+    --spotlight-radius: 650px;
+    background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
+    background-repeat: no-repeat, repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    will-change: background-image;
+  }
+
+  .project-timeline__achive p,
+  .project-timeline__achive_noflex p {
+    margin-bottom: 2vh;
+    font-size: 4vw;
+    line-height: 5.2vw;
+
+    display: inline-block;
+    --spotlight-x: 0px;
+    --spotlight-y: 0px;
+    --spotlight-radius: 650px;
+    background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
+    background-repeat: no-repeat, repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    will-change: background-image;
+  }
+
+  .project-timeline__achive p br {
+    display: none;
+  }
+
+  .project-timeline__img img {
+    width: 100vw;
+  }
+
+  .project-timeline__img {
+    padding-bottom: 0;
+  }
+
+  /* PROJECT TIMELINE END */
+
+  /* OUR CLIENTS START */
+  .py-16 {
+    padding: 10vh 0;
+  }
+
+  .our-clients__items {
+    padding-bottom: 12vh;
+  }
+
+  .our-clients-content p {
+    max-width: 86%;
+    margin: 0vh auto;
+    margin-bottom: 12vh;
+    font-size: 4vw;
+    line-height: 5.2vw;
+  }
+
+  .our-clients-content img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 81vw;
+  }
+
+  .desk-img {
+    display: none !important;
+  }
+
+  .mob-img {
+    display: block;
+  }
+
+  /* OUR CLIENTS END */
+
+
+  /* CONTACT SECTION SPORTLIGHT START */
+  .contact-section {
+    padding: 10vh 0;
+  }
+
+  .contact-main_inner {
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .spot-text span {
+    font-size: 13vw;
+    line-height: 14vw;
+
+    display: inline-block;
+    --spotlight-x: 0px;
+    --spotlight-y: 0px;
+    --spotlight-radius: 650px;
+    background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
+    background-repeat: no-repeat, repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    will-change: background-image;
+  }
+
+  .contact-main_inner {
+    height: 0% !important;
+  }
+
+  .contact-main_sub span {
+    font-size: 4vw !important;
+  }
+
+  .contact-main_sub a {
+    font-size: 4vw !important;
+  }
+
+  /* CONTACT SECTION SPORTLIGHT END */
+
 }
+
 
 @media(max-width: 767px) {
   .hero {

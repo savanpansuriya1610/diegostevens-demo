@@ -568,55 +568,106 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   /* === OUR FOCUS (SPORTLIGHT EFFECT) END === */
 
-  /* ==== MULTI-LANGUAGE SYSTEM JS START ==== */
-  const translations = {
-    en: {
-      loading_main_text: "Chilean, Entrepreneur & Tech Visionary"
-    },
-    es: {
-      loading_main_text: "Visionario chileno, emprendedor y tecnológico"
-    }
-  };
+});
 
-  // === Detect default or saved language ===
-  let currentLang = localStorage.getItem("lang") || "en";
-  setLanguage(currentLang);
+/* === TODAY SECTION JS START === */
 
-  // === Function to update texts ===
-  function setLanguage(lang) {
-    const elements = document.querySelectorAll("[data-translate]");
-    elements.forEach((el) => {
-      const key = el.getAttribute("data-translate");
-      if (translations[lang] && translations[lang][key]) {
-        el.textContent = translations[lang][key];
+gsap.registerPlugin(Draggable);
+
+const cards = document.querySelectorAll(".today__slide-master-card");
+const slider = document.querySelector(".today__slide-content");
+const wrapper = document.querySelector(".today__slider-wrapper");
+
+let isDragging = false;
+
+cards.forEach(card => {
+  card.addEventListener("mouseenter", () => {
+    if (isDragging) return;
+
+    cards.forEach(c => {
+      if (c !== card) {
+        gsap.to(c, {
+          opacity: 0.5,
+          filter: "blur(10px)",
+          scale: 1,
+          duration: 0.3,
+          ease: "power1.out"
+        });
       }
     });
 
-    // Update link active state
-    document.querySelectorAll(".lang-wrapper a.lang").forEach((link) => {
-      link.classList.remove("active");
-    });
-    const activeLink = document.querySelector(`.lang-wrapper .${lang === "en" ? "eng" : "es"}`);
-    if (activeLink) activeLink.classList.add("active");
-
-    // Save preference
-    localStorage.setItem("lang", lang);
-    currentLang = lang;
-  }
-
-  // === Add click event listeners ===
-  document.querySelectorAll(".lang-wrapper a.lang").forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      if (link.classList.contains("eng")) {
-        setLanguage("en");
-      } else if (link.classList.contains("es")) {
-        setLanguage("es");
-      }
+    gsap.to(card, {
+      opacity: 1,
+      filter: "blur(0px)",
+      scale: 1.1,
+      duration: 0.3,
+      ease: "power1.out"
     });
   });
 
-  /* ==== MULTI-LANGUAGE SYSTEM JS END ==== */
+  card.addEventListener("mouseleave", () => {
+    if (isDragging) return;
 
+    gsap.to(cards, {
+      opacity: 1,
+      filter: "blur(0px)",
+      scale: 1,
+      duration: 0.3,
+      ease: "power1.out"
+    });
+  });
 });
+
+function initializeDraggable() {
+
+  if (typeof Draggable === 'undefined' || !slider || !wrapper) {
+    console.error("Draggable plugin, slider, or wrapper element not found!");
+    return;
+  }
+
+  const containerWidth = wrapper.clientWidth;
+  const contentWidth = slider.scrollWidth;
+
+  const minXValue = -(contentWidth - containerWidth);
+
+  if (contentWidth > containerWidth) {
+
+    Draggable.create(slider, {
+      type: "x",
+      bounds: {
+        minX: minXValue,
+        maxX: 0
+      },
+      inertia: {
+        end: 0,
+        velocity: 0.5,
+        duration: { min: 0.9, max: 1.9 },
+        ease: "power2.out"
+      },
+      edgeResistance: 0.6,
+      dragClickables: true,
+
+      onPress() {
+        isDragging = true;
+        gsap.killTweensOf(cards);
+        slider.style.cursor = "grabbing";
+      },
+
+      onDrag() {
+        slider.style.cursor = "grabbing";
+      },
+
+      onRelease() {
+        isDragging = false;
+        slider.style.cursor = "grab";
+      }
+    });
+
+  } else {
+    console.log("Slider content is not wide enough to drag.");
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initializeDraggable);
+
+/* === TODAY SECTION JS END === */
