@@ -568,106 +568,219 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   /* === OUR FOCUS (SPORTLIGHT EFFECT) END === */
 
+  /* ==== TODAY GRAB SECTION SPOTLIGHT START ==== */
+  const cards = document.querySelectorAll(".today__slide-master-card");
+
+cards.forEach(card => {
+  card.addEventListener("mousemove", e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    card.style.setProperty("--spotlight-x", `${x}px`);
+    card.style.setProperty("--spotlight-y", `${y}px`);
+    card.style.setProperty("--spotlight-opacity", 1);
+  });
+
+  card.addEventListener("mouseleave", () => {
+    card.style.setProperty("--spotlight-opacity", 0);
+  });
+});
+ 
+  /* ==== TODAY GRAB SECTION SPOTLIGHT END ==== */
+
 });
 
 /* === TODAY SECTION JS START === */
 
 gsap.registerPlugin(Draggable);
 
-const cards = document.querySelectorAll(".today__slide-master-card");
-const slider = document.querySelector(".today__slide-content");
-const wrapper = document.querySelector(".today__slider-wrapper");
+let draggableInstance = null;
 
-let isDragging = false;
+function initTodaySlider() {
+  const cards = document.querySelectorAll(".today__slide-master-card");
+  const slider = document.querySelector(".today__slide-content");
+  const wrapper = document.querySelector(".today__slider-wrapper");
 
-cards.forEach(card => {
-  card.addEventListener("mouseenter", () => {
-    if (isDragging) return;
+  if (!slider || !wrapper) return;
 
+  /** Destroy if width < 1024 */
+  if (window.innerWidth <= 1024) {
+    if (draggableInstance) {
+      draggableInstance[0].kill();
+      draggableInstance = null;
+    }
+    gsap.set(slider, { x: 0 });
+    return;
+  }
+
+  /** Prevent double initialization */
+  if (draggableInstance) return;
+
+  let isDragging = false;
+  let lastMouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+  function applyHover(targetCard) {
+    if (!targetCard) return resetHover();
     cards.forEach(c => {
-      if (c !== card) {
+      if (c !== targetCard) {
         gsap.to(c, {
           opacity: 0.5,
           filter: "blur(10px)",
           scale: 1,
-          duration: 0.3,
-          ease: "power1.out"
+          duration: 0.28,
+          ease: "power2.out"
         });
       }
     });
 
-    gsap.to(card, {
+    gsap.to(targetCard, {
       opacity: 1,
       filter: "blur(0px)",
       scale: 1.1,
-      duration: 0.3,
-      ease: "power1.out"
+      duration: 0.28,
+      ease: "power2.out"
     });
-  });
+  }
 
-  card.addEventListener("mouseleave", () => {
-    if (isDragging) return;
-
+  function resetHover() {
     gsap.to(cards, {
       opacity: 1,
       filter: "blur(0px)",
       scale: 1,
-      duration: 0.3,
-      ease: "power1.out"
+      duration: 0.28,
+      ease: "power2.out"
+    });
+  }
+
+  cards.forEach(card => {
+    card.addEventListener("mouseenter", () => {
+      if (!isDragging) applyHover(card);
+    });
+
+    card.addEventListener("mouseleave", () => {
+      if (!isDragging) resetHover();
     });
   });
-});
 
-function initializeDraggable() {
+  let pointerMoveHandler = (e) => {
+    lastMouse.x = e.clientX ?? e.touches?.[0]?.clientX ?? lastMouse.x;
+    lastMouse.y = e.clientY ?? e.touches?.[0]?.clientY ?? lastMouse.y;
+  };
 
-  if (typeof Draggable === 'undefined' || !slider || !wrapper) {
-    console.error("Draggable plugin, slider, or wrapper element not found!");
-    return;
+  function smoothThrowAndSyncHover(currentX, distance, minX, maxX) {
+    let target = currentX + distance;
+    target = Math.max(Math.min(target, maxX), minX);
+
+    const duration = Math.min(1.9, Math.max(0.45, Math.abs(distance) / 900));
+
+    gsap.to(slider, {
+      x: target,
+      duration,
+      ease: "power3.out",
+      onUpdate() {
+        const el = document.elementFromPoint(lastMouse.x, lastMouse.y);
+        const card = el?.closest?.(".today__slide-master-card");
+        if (card) applyHover(card);
+        else resetHover();
+      }
+    });
   }
 
   const containerWidth = wrapper.clientWidth;
   const contentWidth = slider.scrollWidth;
-
   const minXValue = -(contentWidth - containerWidth);
 
-  if (contentWidth > containerWidth) {
+  if (contentWidth <= containerWidth) return;
 
-    Draggable.create(slider, {
-      type: "x",
-      bounds: {
-        minX: minXValue,
-        maxX: 0
-      },
-      inertia: {
-        end: 0,
-        velocity: 0.5,
-        duration: { min: 0.9, max: 1.9 },
-        ease: "power2.out"
-      },
-      edgeResistance: 0.6,
-      dragClickables: true,
+  draggableInstance = Draggable.create(slider, {
+    type: "x",
+    bounds: { minX: minXValue, maxX: 0 },
+    edgeResistance: 0.32,
+    dragClickables: true,
 
-      onPress() {
-        isDragging = true;
-        gsap.killTweensOf(cards);
-        slider.style.cursor = "grabbing";
-      },
+    onPress(e) {
+      isDragging = true;
+      gsap.killTweensOf(slider);
+      gsap.killTweensOf(cards);
 
-      onDrag() {
-        slider.style.cursor = "grabbing";
-      },
+      slider.style.cursor = "grabbing";
+      gsap.to(wrapper, { scale: 0.94, duration: 0.22, ease: "power2.out" });
 
-      onRelease() {
-        isDragging = false;
-        slider.style.cursor = "grab";
+      document.addEventListener("pointermove", pointerMoveHandler);
+      document.addEventListener("mousemove", pointerMoveHandler);
+      document.addEventListener("touchmove", pointerMoveHandler, { passive: true });
+
+      this._hist = [{ x: this.x, t: performance.now() }];
+
+      if (e?.clientX !== undefined) {
+        lastMouse.x = e.clientX;
+        lastMouse.y = e.clientY;
       }
-    });
+    },
 
-  } else {
-    console.log("Slider content is not wide enough to drag.");
-  }
+    onDrag() {
+      const now = performance.now();
+      this._hist.push({ x: this.x, t: now });
+      if (this._hist.length > 8) this._hist.shift();
+
+      if (this.pointerX !== undefined) {
+        lastMouse.x = this.pointerX;
+        lastMouse.y = this.pointerY ?? lastMouse.y;
+      }
+    },
+
+    onRelease(e) {
+      isDragging = false;
+      slider.style.cursor = "grab";
+      gsap.to(wrapper, { scale: 1, duration: 0.22, ease: "power2.out" });
+
+      if (e?.clientX !== undefined) {
+        lastMouse.x = e.clientX;
+        lastMouse.y = e.clientY;
+      }
+
+      setTimeout(() => {
+        document.removeEventListener("pointermove", pointerMoveHandler);
+        document.removeEventListener("mousemove", pointerMoveHandler);
+        document.removeEventListener("touchmove", pointerMoveHandler);
+      }, 2000);
+
+      const hist = this._hist || [];
+      if (hist.length < 2) {
+        const elNow = document.elementFromPoint(lastMouse.x, lastMouse.y);
+        const cardNow = elNow?.closest?.(".today__slide-master-card");
+        if (cardNow) applyHover(cardNow);
+        else resetHover();
+        return;
+      }
+
+      const last = hist[hist.length - 1];
+      let first = hist[0];
+      for (let i = hist.length - 2; i >= 0; i--) {
+        if (last.t - hist[i].t >= 60) {
+          first = hist[i];
+          break;
+        }
+      }
+
+      const dt = Math.max(1, last.t - first.t);
+      const dx = last.x - first.x;
+      const velocity = dx / dt;
+
+      const multiplier = 520;
+      const distance = velocity * multiplier;
+
+      const currentX = gsap.getProperty(slider, "x");
+
+      smoothThrowAndSyncHover(currentX, distance, minXValue, 0);
+    }
+  });
 }
 
-document.addEventListener('DOMContentLoaded', initializeDraggable);
+document.addEventListener("DOMContentLoaded", initTodaySlider);
+window.addEventListener("resize", () => {
+  setTimeout(initTodaySlider, 250);
+});
 
 /* === TODAY SECTION JS END === */
