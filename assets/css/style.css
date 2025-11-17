@@ -1350,21 +1350,21 @@ section.columns__layout-section {
   font-family: var(--base-font-family);
   font-weight: normal;
   background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
-    background-repeat: no-repeat, repeat;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    will-change: background-image;
+  background-repeat: no-repeat, repeat;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: background-image;
 }
 
 .today__slide-info p {
   font-size: 1.4vw;
   line-height: 1.85vw;
   font-weight: normal;
-      background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
-    background-repeat: no-repeat, repeat;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    will-change: background-image;
+  background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
+  background-repeat: no-repeat, repeat;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: background-image;
 }
 
 .today__slide-video {
@@ -1386,32 +1386,31 @@ section.columns__layout-section {
   position: absolute;
   inset: 0;
 
-  background: radial-gradient(
-    circle 320px at var(--spotlight-x, -100%) var(--spotlight-y, -100%),
+  background: radial-gradient(circle 320px at var(--spotlight-x, -100%) var(--spotlight-y, -100%),
 
-    /* Soft center — not harsh */
-    rgba(255,255,255,0.12) 0%,
+      /* Soft center — not harsh */
+      rgba(255, 255, 255, 0.12) 0%,
 
-    /* Medium outer spread */
-    rgba(255,255,255,0.07) 40%,
+      /* Medium outer spread */
+      rgba(255, 255, 255, 0.07) 40%,
 
-    /* Wider soft light */
-    rgba(255,255,255,0.03) 70%,
+      /* Wider soft light */
+      rgba(255, 255, 255, 0.03) 70%,
 
-    /* Fade end */
-    rgba(255,255,255,0) 100%
-  );
+      /* Fade end */
+      rgba(255, 255, 255, 0) 100%);
 
   opacity: var(--spotlight-opacity, 0);
 
   /* Smooth fade + movement */
-  transition: opacity 0.35s ease, 
-              background-position 0.35s ease, 
-              background-size 0.35s ease;
+  transition: opacity 0.35s ease,
+    background-position 0.35s ease,
+    background-size 0.35s ease;
 
   pointer-events: none;
   z-index: 0;
-  filter: blur(2px); /* <- makes glow spread naturally */
+  filter: blur(2px);
+  /* <- makes glow spread naturally */
 }
 
 
@@ -1525,20 +1524,62 @@ section.columns__layout-section {
 
 /* === OUR FOCUS END === */
 
+.columns__layout-mobile-img {
+  display: none;
+}
+
+/* === SCROLLBAR START === */
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar {
+  position: fixed;
+  top: 10px;
+  bottom: 10px;
+  right: 10px;
+  width: 6px;
+  background: transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.custom-scrollbar-thumb {
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  background: rgba(184, 184, 184, 0.6);
+  border-radius: 3px;
+  top: 0;
+  transition: background 0.2s ease;
+}
+
+.custom-scrollbar-thumb:hover {
+  background: rgba(220, 220, 220, 0.9);
+}
+
+/* === SCROLLBAR END === */
+
 
 /* === RESPONSIVE CSS START === */
 
 @media only screen and (max-width:1024px) {
-.today__slider-wrapper {
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch !important;
-}
+  .today__slider-wrapper {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch !important;
+  }
 
 }
 
 @media only screen and (max-width: 768px) {
 
- /* Banner Section CSS Start */
+  /* Banner Section CSS Start */
 
   .hero__wrapper {
     background-color: var(--white);
@@ -1736,27 +1777,33 @@ section.columns__layout-section {
 
   /* INTERST SECTION START */
 
-  .columns__layout-section {
-    display: block;
-    box-sizing: border-box;
-    height: auto;
-  }
-
-  .columns__layout-section-left img.columns__layout-section-img {
+  section.columns__layout-section {
     height: auto;
   }
 
   .columns__layout-section-left {
-    position: absolute;
-    width: 46.5vh;
-    right: 0;
-    top: 12vh;
-    height: 38vh;
+    display: none;
   }
 
   .columns__layout-section-right {
     width: 100%;
-    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .columns__layout-mobile-img {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    height: auto;
+    margin: 3vh 0;
+  }
+
+  .columns__layout-mobile-img img {
+    width: 65vw;
+    height: auto;
+    object-fit: cover;
+    margin-right: -2vw;
   }
 
   .columns__layout-section-right .columns__layout-section-title {
@@ -1765,8 +1812,7 @@ section.columns__layout-section {
   }
 
   .default-list {
-    padding-top: 50vh;
-
+    margin-top: 4vw;
   }
 
   .columns__layout-section-right .default-list li {
@@ -1777,12 +1823,12 @@ section.columns__layout-section {
   /* INTERST SECTION END */
 
   /* OUR FOCUS START */
-  .our__focus-list {
-    padding-top: 50vh;
+  .our__focus {
+    padding: 5vw;
   }
 
-  .our__focus {
-    padding: 7vw;
+  .our__focus-responsive img {
+    margin-right: -7vw;
   }
 
   .columns__layout-section-contnet .our__focus-list li {
@@ -1991,18 +2037,19 @@ section.columns__layout-section {
 
 }
 
-
 @media only screen and (max-width: 767px) {
-.header__nav nav {
+  .header__nav nav {
     bottom: 3vh;
-}
-.header__nav #movie {
+  }
+
+  .header__nav #movie {
     display: none;
-}
-.header .header__nav .link {
-      padding-left: 8vw;
+  }
+
+  .header .header__nav .link {
+    padding-left: 8vw;
     font-size: 3.2vw;
-}
+  }
 }
 
 @media only screen and (max-width: 575px) {
@@ -2062,4 +2109,5 @@ section.columns__layout-section {
 
   /* CONTACT PARTNERS END */
 }
+
 /* === RESPONSIVE CSS END === */

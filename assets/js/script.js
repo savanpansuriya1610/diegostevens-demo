@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
     defaults: { ease: "power2.out" }
   });
 
-  // ===== COUNTER (0 → 100%) =====
   let counter = { value: 0 };
   tl.to(counter, {
     value: 100,
@@ -50,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  // ===== PRELOADER + HERO START TOGETHER =====
   tl.addLabel("revealStart");
 
   tl.to(".logo-black", {
@@ -62,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }, "revealStart");
 
-  // PRELOADER COLLAPSE
   tl.to(preloader, {
     height: 0,
     duration: 1.3,
@@ -76,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-  // HERO TEXT (rise bottom → top)
   tl.to(heroWrapper, {
     y: "0%",
     opacity: 1,
@@ -84,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ease: "power4.out"
   }, "revealStart");
 
-  // HERO IMAGE (zoom-out + slide-in)
   gsap.set(heroImg, { scale: 1.3, x: 100, opacity: 0 });
   tl.to(heroImg, {
     scale: 1,
@@ -94,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ease: "power4.out"
   }, "revealStart+=0.1");
 
-  // ===== HERO LEFT GRADIENT TRANSITION =====
   gsap.set(heroLeft, {
     background: "linear-gradient(0deg, rgba(255,255,255,1) 100%, rgba(255,255,255,1) 100%)"
   });
@@ -108,7 +102,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }, "revealStart");
 
-  // ===== HEADER NAV (fade-in + slide-down) =====
   gsap.set(headerNav, { y: 50, opacity: 0 });
   tl.to(headerNav, {
     y: 0,
@@ -117,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ease: "power3.out"
   }, "revealStart+=0.8");
 
-  // ===== ROTATING HERO IMAGE LOGIC =====
   const Heroimages = [
     '../assets/images/hero-img-1.jpg',
     '../assets/images/hero-img-2.jpg',
@@ -136,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (heroInnerImg) {
     heroInnerImg.src = Heroimages[currentIndex];
   }
+
   /* HEADER JS START */
   const hamburger = document.querySelector("#hamburger");
   const menu = document.querySelector(".menu");
@@ -571,22 +564,22 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ==== TODAY GRAB SECTION SPOTLIGHT START ==== */
   const cards = document.querySelectorAll(".today__slide-master-card");
 
-cards.forEach(card => {
-  card.addEventListener("mousemove", e => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  cards.forEach(card => {
+    card.addEventListener("mousemove", e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-    card.style.setProperty("--spotlight-x", `${x}px`);
-    card.style.setProperty("--spotlight-y", `${y}px`);
-    card.style.setProperty("--spotlight-opacity", 1);
+      card.style.setProperty("--spotlight-x", `${x}px`);
+      card.style.setProperty("--spotlight-y", `${y}px`);
+      card.style.setProperty("--spotlight-opacity", 1);
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.setProperty("--spotlight-opacity", 0);
+    });
   });
 
-  card.addEventListener("mouseleave", () => {
-    card.style.setProperty("--spotlight-opacity", 0);
-  });
-});
- 
   /* ==== TODAY GRAB SECTION SPOTLIGHT END ==== */
 
 });
@@ -604,7 +597,6 @@ function initTodaySlider() {
 
   if (!slider || !wrapper) return;
 
-  /** Destroy if width < 1024 */
   if (window.innerWidth <= 1024) {
     if (draggableInstance) {
       draggableInstance[0].kill();
@@ -614,7 +606,6 @@ function initTodaySlider() {
     return;
   }
 
-  /** Prevent double initialization */
   if (draggableInstance) return;
 
   let isDragging = false;
@@ -784,3 +775,99 @@ window.addEventListener("resize", () => {
 });
 
 /* === TODAY SECTION JS END === */
+
+/* === TODAY SECTION CARD START === */
+
+const todayCards = document.querySelectorAll(".today__slide-master-card");
+
+if (todayCards.length > 0) {
+  const MAX_TRANSLATE = 15;
+  const SCALE = 1.05;
+
+  todayCards.forEach(card => {
+
+    card.addEventListener("mousemove", (e) => {
+
+      if (window.innerWidth <= 768) return;
+
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const nx = ((x / rect.width) - 0.5) * 2;
+      const ny = ((y / rect.height) - 0.5) * 2;
+
+      const tx = -nx * MAX_TRANSLATE;
+      const ty = -ny * MAX_TRANSLATE;
+
+      card.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${SCALE})`;
+      card.style.zIndex = 5;
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+      card.style.zIndex = "";
+    });
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth <= 768) {
+      todayCards.forEach(card => {
+        card.style.transform = "";
+        card.style.zIndex = "";
+      });
+    }
+  });
+}
+
+/* === TODAY SECTION CARD END === */
+
+/* === SCROLLBAR START === */
+const scrollbar = document.querySelector(".custom-scrollbar");
+const thumb = document.querySelector(".custom-scrollbar-thumb");
+
+let isDragging = false;
+let startY;
+let startTop;
+
+function updateThumb() {
+  const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  const trackHeight = scrollbar.clientHeight - thumb.clientHeight;
+
+  thumb.style.top = scrollPercent * trackHeight + "px";
+}
+
+window.addEventListener("scroll", updateThumb);
+updateThumb();
+
+thumb.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  startY = e.clientY;
+  startTop = parseInt(window.getComputedStyle(thumb).top);
+  document.body.style.userSelect = "none";
+});
+
+
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+
+  const dy = e.clientY - startY;
+  const newTop = startTop + dy;
+
+  const maxTop = scrollbar.clientHeight - thumb.clientHeight;
+
+  const safeTop = Math.max(0, Math.min(newTop, maxTop));
+  thumb.style.top = safeTop + "px";
+
+  const scrollPercent = safeTop / maxTop;
+  window.scrollTo({
+    top: scrollPercent * (document.body.scrollHeight - window.innerHeight),
+    behavior: "instant"
+  });
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+  document.body.style.userSelect = "";
+});
+/* === SCROLLBAR END === */
