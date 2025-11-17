@@ -870,4 +870,23 @@ document.addEventListener("mouseup", () => {
   isDragging = false;
   document.body.style.userSelect = "";
 });
+
 /* === SCROLLBAR END === */
+
+/* Header Linkup JS Start */
+
+document.querySelectorAll('[aria-label]').forEach(el => {
+  el.addEventListener('click', () => {
+    const targetId = el.getAttribute('aria-label');
+
+    window.location.hash = targetId;
+
+    const menu = document.querySelector('.menu');
+    if (menu) menu.classList.add('hide');
+
+    const hamburger = document.querySelector('#hamburger');
+    if (hamburger) hamburger.classList.remove('active');
+  });
+});
+
+/* Header Linkup JS End */
