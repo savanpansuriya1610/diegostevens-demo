@@ -645,6 +645,23 @@ section.columns__layout-section {
   color: var(--white);
 }
 
+.about__introduction p {
+  display: inline-block;
+  --spotlight-x: 0px;
+  --spotlight-y: 0px;
+  --spotlight-radius: 350px;
+  background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y),
+      #fff 0%,
+      rgba(255, 255, 255, 0) 80%),
+    linear-gradient(#9b9b9b, #9b9b9b);
+
+  background-repeat: no-repeat, repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: background-image;
+}
+
 .about_quote {
   position: relative;
   z-index: 9;
@@ -1270,6 +1287,20 @@ section.columns__layout-section {
 .today__Slider-section {
   background: var(--white);
   overflow: hidden;
+  padding: 16vh 0;
+}
+
+[today__Slider-spotlight-dark] {
+  display: inline-block;
+  --spotlight-x: 0px;
+  --spotlight-y: 0px;
+  --spotlight-radius: 150px;
+  background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #4a4a4a 0%, rgb(0, 0, 0) 100%), linear-gradient(#000000, #6e6e6e);
+  background-repeat: no-repeat, repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: background-image;
 }
 
 .today__slider-intro {
@@ -1569,6 +1600,19 @@ html::-webkit-scrollbar {
 
 /* === RESPONSIVE CSS START === */
 
+@media (max-width:1024px) {
+  .custom-scrollbar {
+    right: 1px;
+    border-radius: 0;
+    width: 3px;
+  }
+
+  .custom-scrollbar-thumb {
+    border-radius: 0;
+    height: 50px;
+  }
+}
+
 @media only screen and (max-width:1024px) {
   .today__slider-wrapper {
     overflow-x: scroll;
@@ -1618,7 +1662,7 @@ html::-webkit-scrollbar {
 
   .hero__wrapper-left svg,
   .menu__left-intro svg {
-    width: 25vw;
+    width: auto;
   }
 
   .hero__wrapper-bottom {
@@ -2035,11 +2079,85 @@ html::-webkit-scrollbar {
 
   /* CONTACT PARTNERS END */
 
-}
+  /* TODAY SECTION START */
+  .today__slider-wrapper {
+    margin-bottom: 0;
+  }
 
-@media only screen and (max-width: 767px) {
-  .header__nav nav {
+  .today__Slider-section {
+    padding: 0;
+  }
+
+  .today__slide-content {
+    margin: 8vh 0vw;
+  }
+
+  .today__slider-intro {
+    padding-top: 6vh;
+  }
+
+  .today__slider-intro h2 {
+    font-size: 13vw;
+    line-height: 14vw;
+  }
+
+  .today__slider-intro p {
+    font-size: 4vw;
+    line-height: 5.2vw;
+    width: 40vw;
+  }
+
+  .today__slider-intro p br {
+    display: none;
+  }
+
+  .today__slide-master-card {
+    width: 42vw;
+    margin: 0 2vw;
+  }
+
+  .today__slide-content {
+    padding-left: 3vw;
+  }
+
+  .today__slide-info h3 {
+    font-size: 4vw;
+    line-height: 4.2vw;
+    display: inline-block;
+    --spotlight-x: 0px;
+    --spotlight-y: 0px;
+    --spotlight-radius: 650px;
+    background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
+    background-repeat: no-repeat, repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    will-change: background-image;
+  }
+
+  .today__slide-info p {
+    font-size: 2vw;
+    line-height: 2.5vw;
+    display: inline-block;
+    --spotlight-x: 0px;
+    --spotlight-y: 0px;
+    --spotlight-radius: 650px;
+    background-image: radial-gradient(circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y), #fff 0%, rgba(255, 255, 255, 0) 80%), linear-gradient(#9b9b9b, #9b9b9b);
+    background-repeat: no-repeat, repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    will-change: background-image;
+  }
+
+  /* TODAY SECTION END */
+
+  /* HEADER SECTION START */
+  .header__nav {
+
     bottom: 3vh;
+    border-radius: 12vw;
+    align-items: center;
   }
 
   .header__nav #movie {
@@ -2047,10 +2165,79 @@ html::-webkit-scrollbar {
   }
 
   .header .header__nav .link {
+    padding-left: 0;
+    font-size: 3.4vw;
+  }
+
+  .header__nav a {
+    display: flex;
+    align-items: center;
+  }
+
+  .header__nav a:nth-of-type(1) {
+    font-size: 0 !important;
+  }
+
+  .header__nav a:nth-of-type(1)::after {
+    content: "LI";
+    font-size: 3.4vw;
+    color: var(--black);
+  }
+
+  .header__nav a:nth-of-type(2) {
+    font-size: 0 !important;
+  }
+
+  .header__nav a:nth-of-type(2)::after {
+    content: "INS";
+    font-size: 3.4vw;
+    color: var(--black);
+
+  }
+
+  div#hamburger {
+    width: 12vw;
+    height: 12vw;
+    margin: 1.5vw;
+    margin-left: 4vw;
+  }
+
+  #hamburger svg {
+    width: 70%;
+  }
+
+  .header .header__nav .link {
     padding-left: 8vw;
     font-size: 3.2vw;
   }
+
+  /* HEADER SECTION END */
+
+  /* preloader css start */
+  .fixed-logo,
+  .menu__left-intro {
+    padding: 0;
+  }
+
+  .fixed-logo .logo svg,
+  .menu__left-intro svg {
+    height: 49.6vh;
+    position: absolute;
+    top: 6.8vh;
+    left: 3vh;
+    width: auto;
+  }
+
+  div#hamburger {
+    width: 12vw;
+    height: 12vw;
+  }
+
+  /* preloader css end */
+
 }
+
+@media only screen and (max-width: 767px) {}
 
 @media only screen and (max-width: 575px) {
   /* CONTACT PARTNERS START */
@@ -2094,6 +2281,37 @@ html::-webkit-scrollbar {
     width: 30vw;
     height: auto;
   }
+}
+
+@media (max-width:500px) {
+  .custom-scrollbar-thumb {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+
+  /* TODAY SECTION START */
+  .today__slide-master-card {
+    width: 70vw;
+    margin: 0 1vw;
+  }
+
+  .today__slide-content {
+    padding-left: 4vw;
+  }
+
+  .today__slide-info h3 {
+    font-size: 5.5vw;
+    line-height: 7.2vw;
+  }
+
+  .today__slide-info p {
+    font-size: 4vw;
+    line-height: 5.2vw;
+  }
+
+  /* TODAY SECTION END */
 }
 
 @media only screen and (max-width:320px) {

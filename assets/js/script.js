@@ -382,61 +382,163 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* SPORTLIGHT EFFECT START */
 
-  const spans = document.querySelectorAll(".spot-text span");
+  // const spans = document.querySelectorAll(".spot-text span");
 
-  document.addEventListener("mousemove", (e) => {
-    spans.forEach((span) => {
-      const rect = span.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+  // document.addEventListener("mousemove", (e) => {
+  //   spans.forEach((span) => {
+  //     const rect = span.getBoundingClientRect();
+  //     const x = e.clientX - rect.left;
+  //     const y = e.clientY - rect.top;
 
-      span.style.setProperty("--mx", `${x}px`);
-      span.style.setProperty("--my", `${y}px`);
+  //     span.style.setProperty("--mx", `${x}px`);
+  //     span.style.setProperty("--my", `${y}px`);
+  //   });
+  // });
+
+  function applySpotlight(targetElements, varX = '--mx', varY = '--my') {
+    targetElements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      el.style.setProperty(varX, `${x}px`);
+      el.style.setProperty(varY, `${y}px`);
     });
-  });
+  }
+
+  let mouseMoveEnabled = false;
+
+  function handleMouseMove(e) {
+    if (!mouseMoveEnabled) return;  // safety check
+
+    applySpotlight(document.querySelectorAll(".spot-text span"));
+    applySpotlight(document.querySelectorAll(".about__introduction p"), '--spotlight-x', '--spotlight-y');
+  }
+
+  function checkSpotlight() {
+    if (window.innerWidth >= 768) {
+      mouseMoveEnabled = true;
+      document.addEventListener("mousemove", handleMouseMove);
+    } else {
+      mouseMoveEnabled = false;
+      document.removeEventListener("mousemove", handleMouseMove);
+
+      // RESET VALUES
+      document.querySelectorAll(".spot-text span").forEach(span => {
+        span.style.setProperty("--mx", `0px`);
+        span.style.setProperty("--my", `0px`);
+      });
+      document.querySelectorAll(".about__introduction p").forEach(p => {
+        p.style.setProperty("--spotlight-x", `0px`);
+        p.style.setProperty("--spotlight-y", `0px`);
+      });
+    }
+  }
+
+  // INIT
+  checkSpotlight();
+  window.addEventListener("resize", checkSpotlight);
+
+
 
   /* SPORTLIGHT EFFECT END */
 
   /*=== PARALLAX DESIN START(BACKGROUND IMAGE MOVEMEMT) === */
-  const maxMove = -700;
+  // const maxMove = -700;
 
-  const speedFactors = {
-    child1: 1.10,
-    child2: 2.0,
-    child3: 2.5,
-    child4: 4.5
-  };
+  // const speedFactors = {
+  //   child1: 1.10,
+  //   child2: 2.0,
+  //   child3: 2.5,
+  //   child4: 4.5
+  // };
 
-  const commonScrollTrigger = {
-    trigger: ".partners-container",
-    start: "top bottom",
-    end: "bottom top",
-    scrub: 1.5
-  };
+  // const commonScrollTrigger = {
+  //   trigger: ".partners-container",
+  //   start: "top bottom",
+  //   end: "bottom top",
+  //   scrub: 1.5
+  // };
 
-  gsap.to(".partner-item:nth-child(1) .image-container img", {
-    y: maxMove * speedFactors.child1,
-    ease: "none",
-    scrollTrigger: commonScrollTrigger
+  // gsap.to(".partner-item:nth-child(1) .image-container img", {
+  //   y: maxMove * speedFactors.child1,
+  //   ease: "none",
+  //   scrollTrigger: commonScrollTrigger
+  // });
+
+  // gsap.to(".partner-item:nth-child(2) .image-container img", {
+  //   y: maxMove * speedFactors.child2,
+  //   ease: "none",
+  //   scrollTrigger: commonScrollTrigger
+  // });
+
+  // gsap.to(".partner-item:nth-child(3) .image-container img", {
+  //   y: maxMove * speedFactors.child3,
+  //   ease: "none",
+  //   scrollTrigger: commonScrollTrigger
+  // });
+
+  // gsap.to(".partner-item:nth-child(4) .image-container img", {
+  //   y: maxMove * speedFactors.child4,
+  //   ease: "none",
+  //   scrollTrigger: commonScrollTrigger
+  // });
+
+  /*=== PARALLAX DESIN START(BACKGROUND IMAGE MOVEMEMT) === */
+  function initParallax() {
+
+    // Only run parallax above 768px
+    if (window.innerWidth > 768) {
+      const maxMove = -700;
+
+      const speedFactors = {
+        child1: 1.10,
+        child2: 2.0,
+        child3: 2.5,
+        child4: 4.5
+      };
+
+      const commonScrollTrigger = {
+        trigger: ".partners-container",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1.5
+      };
+
+      gsap.to(".partner-item:nth-child(1) .image-container img", {
+        y: maxMove * speedFactors.child1,
+        ease: "none",
+        scrollTrigger: commonScrollTrigger
+      });
+
+      gsap.to(".partner-item:nth-child(2) .image-container img", {
+        y: maxMove * speedFactors.child2,
+        ease: "none",
+        scrollTrigger: commonScrollTrigger
+      });
+
+      gsap.to(".partner-item:nth-child(3) .image-container img", {
+        y: maxMove * speedFactors.child3,
+        ease: "none",
+        scrollTrigger: commonScrollTrigger
+      });
+
+      gsap.to(".partner-item:nth-child(4) .image-container img", {
+        y: maxMove * speedFactors.child4,
+        ease: "none",
+        scrollTrigger: commonScrollTrigger
+      });
+    }
+  }
+
+  // Run on load
+  initParallax();
+
+  // Run again if resized
+  window.addEventListener("resize", function () {
+    initParallax();
   });
 
-  gsap.to(".partner-item:nth-child(2) .image-container img", {
-    y: maxMove * speedFactors.child2,
-    ease: "none",
-    scrollTrigger: commonScrollTrigger
-  });
-
-  gsap.to(".partner-item:nth-child(3) .image-container img", {
-    y: maxMove * speedFactors.child3,
-    ease: "none",
-    scrollTrigger: commonScrollTrigger
-  });
-
-  gsap.to(".partner-item:nth-child(4) .image-container img", {
-    y: maxMove * speedFactors.child4,
-    ease: "none",
-    scrollTrigger: commonScrollTrigger
-  });
   /*=== PARALLAX DESIN END(BACKGROUND IMAGE MOVEMEMT) === */
 
   /*=== TIMELINE EFFECT START === */
@@ -890,3 +992,78 @@ document.querySelectorAll('[aria-label]').forEach(el => {
 });
 
 /* Header Linkup JS End */
+
+/* On Hover Sound JS Start */
+
+var context = new AudioPlayer();
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  context.loadSound('assets/audio/a-tag-hover.mp3', 'beep');
+  var generalLinks = document.querySelectorAll("a:not(.menu__right-items ul.menu__list li a)");
+
+  generalLinks.forEach(function (link) {
+    link.addEventListener('mouseenter', function () {
+      context.playSound('beep');
+    });
+  });
+
+  context.loadSound('assets/audio/toggle-menu-link-hover.mp3', 'menuBeep');
+  var menuLinks = document.querySelectorAll(".menu__right-items ul.menu__list li a");
+
+  menuLinks.forEach(function (link) {
+    link.addEventListener('mouseenter', function () {
+      context.playSound('menuBeep');
+    });
+  });
+
+  context.loadSound('assets/audio/toggle-btn-click.mp3', 'toggleBeep');
+  var hamburger = document.querySelector("div#hamburger");
+  if (hamburger) {
+    hamburger.addEventListener('click', function () {
+      context.playSound('toggleBeep');
+    });
+  }
+
+  context.loadSound('assets/audio/today-card-hover.mp3', 'todayBeep');
+  var todaySlides = document.querySelectorAll(".today__slide-info");
+
+  todaySlides.forEach(function (slide) {
+    slide.addEventListener('mouseenter', function () {
+      context.playSound('todayBeep');
+    });
+  });
+
+  context.loadSound('assets/audio/challenges-hover.mp3', 'challengesBeep');
+  var challengeItems = document.querySelectorAll(".columns__layout-section-contnet .our__focus-list li");
+
+  challengeItems.forEach(function (item) {
+    item.addEventListener('mouseenter', function () {
+      context.playSound('challengesBeep');
+    });
+  });
+
+  context.loadSound('assets/audio/on-scroll-title-enter-on-window.mp3', 'scrollTitleBeep');
+  const quoteElement = document.querySelector(".contact-main_inner h2.spot-text");
+
+  if (quoteElement) {
+    const options = {
+      threshold: 1
+    };
+
+    const observerCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          context.playSound('scrollTitleBeep');
+        } else {
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, options);
+    observer.observe(quoteElement);
+  }
+
+});
+
+/* On Hover Sound JS Start */
