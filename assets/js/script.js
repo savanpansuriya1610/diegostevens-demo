@@ -110,6 +110,36 @@ document.addEventListener("DOMContentLoaded", function () {
     ease: "power3.out"
   }, "revealStart+=0.8");
 
+  function initHeaderNavScroll() {
+    window.removeEventListener("scroll", handleScroll);
+
+    if (window.innerWidth <= 1024) {
+      lastScroll = 0;
+      window.addEventListener("scroll", handleScroll);
+    } else {
+      gsap.set(headerNav, { y: 0, opacity: 1 });
+    }
+  }
+
+  let lastScroll = 0;
+
+  function handleScroll() {
+    const currentScroll = window.pageYOffset;
+
+    if (currentScroll > lastScroll) {
+      gsap.to(headerNav, { y: "200%", opacity: 0, duration: 0.4, ease: "power3.out" });
+    } else {
+      gsap.to(headerNav, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" });
+    }
+
+    lastScroll = currentScroll;
+  }
+
+  initHeaderNavScroll();
+
+  window.addEventListener("resize", initHeaderNavScroll);
+
+
   const Heroimages = [
     '../assets/images/hero-img-1.jpg',
     '../assets/images/hero-img-2.jpg',
@@ -195,205 +225,197 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* ABOUT SECTION START */
 
-  ScrollTrigger.defaults({
-    invalidateOnRefresh: true,
-    anticipatePin: 1,
-  });
+  if (window.innerWidth > 1024) {
+    ScrollTrigger.defaults({
+      invalidateOnRefresh: true,
+      anticipatePin: 1,
+    });
 
-  gsap.to(".bg", {
-    y: "-100%",
-    ease: "none",
-    force3D: true,
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top top",
-      end: "bottom top",
-      scrub: 2,
-    },
-  });
+    gsap.to(".bg", {
+      y: "-100%",
+      ease: "none",
+      force3D: true,
+      scrollTrigger: {
+        trigger: ".about",
+        start: "top top",
+        end: "bottom top",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about__introduction", { y: "50%" });
+    gsap.set(".about__introduction", { y: "50%" });
 
-  gsap.to(".about__introduction", {
-    y: "-100%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about",
-      start: "top 80%",
-      end: "bottom 20%",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about__introduction", {
+      y: "-100%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about",
+        start: "top 80%",
+        end: "bottom 20%",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about_quote--first", { y: "200%" });
+    gsap.set(".about_quote--first", { y: "200%" });
 
-  gsap.to(".about_quote--first", {
-    y: "50%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top 90%",
-      end: "bottom 10%",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about_quote--first", {
+      y: "50%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top 90%",
+        end: "bottom 10%",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about__images--first", { y: "180%" });
+    gsap.set(".about__images--first", { y: "180%" });
 
-  gsap.to(".about__images--first", {
-    y: "-200%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top top",
-      end: "bottom top",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about__images--first", {
+      y: "-200%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top top",
+        end: "bottom top",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about__images--second", { y: "200%" });
+    gsap.set(".about__images--second", { y: "200%" });
 
-  gsap.to(".about__images--second", {
-    y: "-120%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top top",
-      end: "bottom top",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about__images--second", {
+      y: "-120%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top top",
+        end: "bottom top",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about__images--thired", { y: "500%" });
+    gsap.set(".about__images--thired", { y: "500%" });
 
-  gsap.to(".about__images--thired", {
-    y: "-100%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top top",
-      end: "bottom top",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about__images--thired", {
+      y: "-100%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top top",
+        end: "bottom top",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about__images--fourth", { y: "600%" });
+    gsap.set(".about__images--fourth", { y: "600%" });
 
-  gsap.to(".about__images--fourth", {
-    y: "-400%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top -80%",
-      end: "bottom -20%",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about__images--fourth", {
+      y: "-400%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top -80%",
+        end: "bottom -20%",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about_quote--second", { y: "200%" });
+    gsap.set(".about_quote--second", { y: "200%" });
 
-  gsap.to(".about_quote--second", {
-    y: "-20%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top -80%",
-      end: "bottom -20%",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about_quote--second", {
+      y: "-20%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top -80%",
+        end: "bottom -20%",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about__images--fifth", { y: "1200%" });
+    gsap.set(".about__images--fifth", { y: "1200%" });
 
-  gsap.to(".about__images--fifth", {
-    y: "-100%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top -20%",
-      end: "bottom -90%",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about__images--fifth", {
+      y: "-100%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top -20%",
+        end: "bottom -90%",
+        scrub: 2,
+      },
+    });
 
-  gsap.set(".about__images--sixth", { y: "800%" });
+    gsap.set(".about__images--sixth", { y: "800%" });
 
-  gsap.to(".about__images--sixth", {
-    y: "-100%",
-    ease: "none",
-    force3D: true,
-    duration: 1,
-    scrollTrigger: {
-      trigger: ".about__introduction",
-      start: "top -50%",
-      end: "bottom -200%",
-      scrub: 2,
-    },
-  });
+    gsap.to(".about__images--sixth", {
+      y: "-100%",
+      ease: "none",
+      force3D: true,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".about__introduction",
+        start: "top -50%",
+        end: "bottom -200%",
+        scrub: 2,
+      },
+    });
+  }
 
   /* ABOUT SECTION END */
 
   /* ON MOUSE MOVE IMAGE MOVEMENT JS START */
 
-  const tiltImages = document.querySelectorAll('.about__images img');
+  if (window.innerWidth > 1024) {
 
-  document.body.addEventListener('mousemove', (e) => {
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
+    const tiltImages = document.querySelectorAll('.about__images img');
 
-    const percentX = (e.clientX - centerX) / centerX;
-    const percentY = (e.clientY - centerY) / centerY;
+    document.body.addEventListener('mousemove', (e) => {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
 
-    const rotateX = percentY * 5;
-    const rotateY = percentX * -5;
+      const percentX = (e.clientX - centerX) / centerX;
+      const percentY = (e.clientY - centerY) / centerY;
 
-    tiltImages.forEach(img => {
-      img.style.transform = `
+      const rotateX = percentY * 5;
+      const rotateY = percentX * -5;
+
+      tiltImages.forEach(img => {
+        img.style.transform = `
       rotateX(${rotateX}deg)
       rotateY(${rotateY}deg)
       scale(1)
     `;
+      });
     });
-  });
 
-  document.body.addEventListener('mouseleave', () => {
-    tiltImages.forEach(img => {
-      img.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+    document.body.addEventListener('mouseleave', () => {
+      tiltImages.forEach(img => {
+        img.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      });
     });
-  });
+  }
 
-  /* ON MOUSE MOVE IMAGE MOVEMENT JS START */
+  /* ON MOUSE MOVE IMAGE MOVEMENT JS End */
 
   /* SPORTLIGHT EFFECT START */
-
-  // const spans = document.querySelectorAll(".spot-text span");
-
-  // document.addEventListener("mousemove", (e) => {
-  //   spans.forEach((span) => {
-  //     const rect = span.getBoundingClientRect();
-  //     const x = e.clientX - rect.left;
-  //     const y = e.clientY - rect.top;
-
-  //     span.style.setProperty("--mx", `${x}px`);
-  //     span.style.setProperty("--my", `${y}px`);
-  //   });
-  // });
 
   function applySpotlight(targetElements, varX = '--mx', varY = '--my') {
     targetElements.forEach((el) => {
@@ -628,39 +650,42 @@ document.addEventListener("DOMContentLoaded", function () {
   /* === OUR FOCUS END === */
 
   /* === OUR FOCUS (SPORTLIGHT EFFECT) START === */
-  const focusItems = document.querySelectorAll(".our__focus-list li");
+  if (window.innerWidth > 768) {
+    const focusItems = document.querySelectorAll(".our__focus-list li");
 
-  focusItems.forEach((item, index) => {
-    item.addEventListener("mousemove", (e) => {
-      const rect = item.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    focusItems.forEach((item, index) => {
+      item.addEventListener("mousemove", (e) => {
+        const rect = item.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-      item.style.setProperty("--mx", `${x}px`);
-      item.style.setProperty("--my", `${y}px`);
-      item.style.setProperty("--spotlight-opacity", 1);
+        item.style.setProperty("--mx", `${x}px`);
+        item.style.setProperty("--my", `${y}px`);
+        item.style.setProperty("--spotlight-opacity", 1);
 
-      const prevItem = focusItems[index - 1];
-      const nextItem = focusItems[index + 1];
+        const prevItem = focusItems[index - 1];
+        const nextItem = focusItems[index + 1];
 
-      if (prevItem) prevItem.classList.add("glow-near");
-      if (nextItem) nextItem.classList.add("glow-near");
+        if (prevItem) prevItem.classList.add("glow-near");
+        if (nextItem) nextItem.classList.add("glow-near");
 
-      focusItems.forEach((el) => {
-        const rect2 = el.getBoundingClientRect();
-        const relX = e.clientX - rect2.left;
-        const relY = e.clientY - rect2.top;
-        el.style.setProperty("--mx", `${relX}px`);
-        el.style.setProperty("--my", `${relY}px`);
+        focusItems.forEach((el) => {
+          const rect2 = el.getBoundingClientRect();
+          const relX = e.clientX - rect2.left;
+          const relY = e.clientY - rect2.top;
+          el.style.setProperty("--mx", `${relX}px`);
+          el.style.setProperty("--my", `${relY}px`);
+        });
+      });
+
+      item.addEventListener("mouseleave", () => {
+        item.style.setProperty("--spotlight-opacity", 0);
+        if (focusItems[index - 1]) focusItems[index - 1].classList.remove("glow-near");
+        if (focusItems[index + 1]) focusItems[index + 1].classList.remove("glow-near");
       });
     });
+  }
 
-    item.addEventListener("mouseleave", () => {
-      item.style.setProperty("--spotlight-opacity", 0);
-      if (focusItems[index - 1]) focusItems[index - 1].classList.remove("glow-near");
-      if (focusItems[index + 1]) focusItems[index + 1].classList.remove("glow-near");
-    });
-  });
   /* === OUR FOCUS (SPORTLIGHT EFFECT) END === */
 
   /* ==== TODAY GRAB SECTION SPOTLIGHT START ==== */
@@ -993,7 +1018,7 @@ document.querySelectorAll('[aria-label]').forEach(el => {
 
 /* Header Linkup JS End */
 
-/* On Hover Sound JS Start */
+/* On Hover & Scroll Sound JS Start */
 
 var context = new AudioPlayer();
 
@@ -1066,4 +1091,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-/* On Hover Sound JS Start */
+/* On Hover & Scroll Sound JS Start */
