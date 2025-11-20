@@ -564,25 +564,26 @@ document.addEventListener("DOMContentLoaded", function () {
   /*=== PARALLAX DESIN END(BACKGROUND IMAGE MOVEMEMT) === */
 
   /*=== TIMELINE EFFECT START === */
-
-  ScrollTrigger.create({
-    trigger: ".columns__layout-section",
-    start: "top top",
-    end: "+=50%",
-  });
-
-
-  gsap.set(".project-timeline", { y: "70vh" });
-  gsap.to(".project-timeline", {
-    y: 0,
-    ease: "none",
-    scrollTrigger: {
+  if (window.innerWidth > 768) {
+    ScrollTrigger.create({
       trigger: ".columns__layout-section",
       start: "top top",
-      end: "+=97%",
-      scrub: 1
-    }
-  });
+      end: "+=50%",
+    });
+
+
+    gsap.set(".project-timeline", { y: "70vh" });
+    gsap.to(".project-timeline", {
+      y: 0,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".columns__layout-section",
+        start: "top top",
+        end: "+=97%",
+        scrub: 1
+      }
+    });
+  }
 
   /*=== TIMELINE EFFECT END === */
 
@@ -1092,3 +1093,23 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* On Hover & Scroll Sound JS Start */
+
+/* Preloader Mobile JS Start */
+
+document.addEventListener("DOMContentLoaded", function () {
+  const logo = document.querySelector(".fixed-logo .logo svg");
+  if (!logo) return;
+
+  function setPosition() {
+    if (window.innerWidth < 767) {
+      const rect = logo.getBoundingClientRect();
+      const spacing = rect.top + rect.height + 40;
+      document.body.style.setProperty("--bottom-offset", spacing + "px");
+    }
+  }
+
+  setPosition();
+  window.addEventListener("resize", setPosition);
+});
+
+/* Preloader Mobile JS End */
