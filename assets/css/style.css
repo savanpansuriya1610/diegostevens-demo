@@ -826,11 +826,8 @@ section.columns__layout-section {
 
   display: inline-block;
 
-  background-image:
-    var(--spotlight-gradient),
-    var(--base-gradient);
+  background-image: var(--spotlight-gradient), var(--base-gradient);
   background-repeat: no-repeat, repeat;
-
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -859,11 +856,8 @@ section.columns__layout-section {
   color: var(--grey);
   margin-bottom: 13vh;
   display: inline-block;
-  background-image:
-    var(--spotlight-gradient),
-    var(--base-gradient);
+  background-image: var(--spotlight-gradient), var(--base-gradient);
   background-repeat: no-repeat, repeat;
-
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -874,14 +868,9 @@ section.columns__layout-section {
   line-height: 1.85vw;
   color: var(--grey);
   margin-bottom: 13vh;
-
   display: inline-block;
-
-  background-image:
-    var(--spotlight-gradient),
-    var(--base-gradient);
+  background-image: var(--spotlight-gradient), var(--base-gradient);
   background-repeat: no-repeat, repeat;
-
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1878,7 +1867,6 @@ html::-webkit-scrollbar {
   .project-content__main h2 {
     font-size: 13vw;
     line-height: 14vw;
-
     display: inline-block;
     --spotlight-x: 0px;
     --spotlight-y: 0px;
@@ -1896,7 +1884,6 @@ html::-webkit-scrollbar {
     margin-bottom: 2vh;
     font-size: 4vw;
     line-height: 5.2vw;
-
     display: inline-block;
     --spotlight-x: 0px;
     --spotlight-y: 0px;
@@ -1968,7 +1955,6 @@ html::-webkit-scrollbar {
   .spot-text span {
     font-size: 13vw;
     line-height: 14vw;
-
     display: inline-block;
     --spotlight-x: 0px;
     --spotlight-y: 0px;
@@ -2085,7 +2071,6 @@ html::-webkit-scrollbar {
     overflow: hidden;
     background: rgb(17, 17, 17);
     border-radius: 2vw;
-
     --spotlight-x: 0px;
     --spotlight-y: 0px;
     --spotlight-radius: 650px;
@@ -2102,8 +2087,7 @@ html::-webkit-scrollbar {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: radial-gradient(circle 850px at -100px 50%,
-        rgb(255 255 255 / 19%) 0%, rgb(255 255 255 / 8%) 40%, rgba(0, 0, 0, 0.459) 80%);
+    background-image: radial-gradient(circle 850px at -100px 50%, rgb(255 255 255 / 19%) 0%, rgb(255 255 255 / 8%) 40%, rgba(0, 0, 0, 0.459) 80%);
     mix-blend-mode: screen;
     z-index: 0;
   }

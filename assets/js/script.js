@@ -160,29 +160,48 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* HEADER JS START */
+
   const hamburger = document.querySelector("#hamburger");
   const menu = document.querySelector(".menu");
+  const body = document.body;
+  const html = document.documentElement;
+  const menuLinks = document.querySelectorAll(".menu a");
+  const closeMenu = () => {
+    hamburger.classList.remove("active");
+
+    gsap.to(menu, {
+      duration: 0.8,
+      ease: "power3.inOut",
+      css: { maskPosition: "0% -100%", WebkitMaskPosition: "0% -100%" },
+      onComplete: () => {
+        menu.classList.add("hide");
+        body.style.overflow = "";
+        html.style.overflow = "";
+      }
+    });
+  };
 
   hamburger.addEventListener("click", () => {
     hamburger.classList.toggle("active");
 
     if (hamburger.classList.contains("active")) {
       menu.classList.remove("hide");
+      body.style.overflow = "hidden";
+      html.style.overflow = "hidden";
       gsap.to(menu, {
         duration: 0.8,
         ease: "power3.inOut",
         css: { maskPosition: "0% 100%", WebkitMaskPosition: "0% 100%" }
       });
     } else {
-      gsap.to(menu, {
-        duration: 0.8,
-        ease: "power3.inOut",
-        css: { maskPosition: "0% -100%", WebkitMaskPosition: "0% -100%" },
-        onComplete: () => {
-          menu.classList.add("hide");
-        }
-      });
+      closeMenu();
     }
+  });
+
+  menuLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      closeMenu();
+    });
   });
   /* HEADER JS END */
 
@@ -1089,6 +1108,93 @@ document.addEventListener('DOMContentLoaded', function () {
     const observer = new IntersectionObserver(observerCallback, options);
     observer.observe(quoteElement);
   }
+
+
+  context.loadSound('assets/audio/timeline-on-scroll.mp3', 'timelineScrollBeep');
+
+  let timelineVisible = false;
+  let isWheelScrolling = false;
+  let wheelStopTimer = null;
+
+  const projectTimeline = document.querySelector(".project-timeline");
+
+  if (projectTimeline) {
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          timelineVisible = true;
+        } else {
+          timelineVisible = false;
+        }
+      });
+    }, { threshold: 0.0 });
+
+    observer.observe(projectTimeline);
+
+    window.addEventListener("wheel", (e) => {
+      if (!timelineVisible) return;
+
+      context.playSound('timelineScrollBeep');
+
+      clearTimeout(wheelStopTimer);
+
+      wheelStopTimer = setTimeout(() => {
+        stopAudio();
+      }, 9000);
+    });
+
+    function stopAudio() {
+      if (typeof context.stopSound === "function") {
+        context.stopSound('timelineScrollBeep');
+      } else if (typeof context.pauseSound === "function") {
+        context.pauseSound('timelineScrollBeep');
+      }
+    }
+  }
+
+  // context.loadSound('assets/audio/about-on-scroll.mp3', 'aboutScrollBeep');
+
+  // let aboutVisible = false;
+  // let aboutIsWheelScrolling = false;
+  // let aboutWheelStopTimer = null;
+
+  // const projectAbout = document.querySelector("section#about");
+
+  // if (projectAbout) {
+
+  //   const observer = new IntersectionObserver((entries) => {
+  //     entries.forEach(entry => {
+  //       if (entry.isIntersecting) {
+  //         aboutVisible = true;
+  //       } else {
+  //         aboutVisible = false;
+  //       }
+  //     });
+  //   }, { threshold: 0.0 });
+
+  //   observer.observe(projectAbout);
+
+  //   window.addEventListener("wheel", (e) => {
+  //     if (!aboutVisible) return;
+
+  //     context.playSound('aboutScrollBeep');
+
+  //     clearTimeout(aboutWheelStopTimer);
+
+  //     aboutWheelStopTimer = setTimeout(() => {
+  //       stopAudio();
+  //     }, 9000);
+  //   });
+
+  //   function stopAudio() {
+  //     if (typeof context.stopSound === "function") {
+  //       context.stopSound('aboutScrollBeep');
+  //     } else if (typeof context.pauseSound === "function") {
+  //       context.pauseSound('aboutScrollBeep');
+  //     }
+  //   }
+  // }
 
 });
 
