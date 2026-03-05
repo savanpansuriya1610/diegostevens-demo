@@ -2339,3 +2339,73 @@ button.btn--form--submit:hover:before {
 }
 
 /* Become A Creator Page CSS End */
+
+/* Articles Page CSS Start */
+
+.articles--banner {
+    width: 100%;
+    padding: 240px 0 80px 0;
+    position: relative;
+}
+
+.articles--inner {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.articles--banner--title {
+    width: calc(60% - 40px);
+}
+
+.articles--banner-content {
+    width: 40%;
+}
+
+.articles--banner--title h1 {
+    font-size: 120px;
+    line-height: 1.3;
+    color: var(--primary-bg-color);
+    font-weight: 400;
+    margin: 0;
+}
+
+.articles--banner-content h2 {
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 400;
+    color: var(--primary-bg-color);
+    margin: 0 0 20px 0;
+}
+
+.articles--banner-content p {
+    font-size: 18px;
+    line-height: 1.3;
+    color: var(--color-white);
+    font-weight: 400;
+    margin: 0;
+}
+
+.articles--banner-content ul {
+    margin: 30px 0 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.articles--banner-content ul li a {
+    display: flex;
+    width: 32px;
+    height: 32px;
+}
+
+.articles--banner-content ul li a svg {
+    transition: all 0.3s ease-in-out;
+}
+
+.articles--banner-content ul li a:hover svg {
+    fill: var(--color-white) !important;
+}
+
+/* Articles Page CSS End */
